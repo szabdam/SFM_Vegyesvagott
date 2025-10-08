@@ -4,4 +4,5 @@ SFM_Vegyesvágott:  Muhi Barnabás / Géczi János / Szabó Ádám / Katona Imre
 
 PROJEKT: Csomagautomata kezelő rendszer
 
-Az alkalmazás képes kezelni csomagfelvételt, csomagok állapotkövetése, 
+Csomagok kiszállításának kezelése, csomag berakás automatába, teli automata esetén átrakjuk a csomagot egy másik automatába
+
