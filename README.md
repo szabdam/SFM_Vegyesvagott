@@ -6,3 +6,4 @@ PROJEKT: Csomagautomata kezelő rendszer
 
 Csomagok kiszállításának kezelése, csomag berakás automatába, teli automata esetén átrakjuk a csomagot egy másik automatába
 
+test
