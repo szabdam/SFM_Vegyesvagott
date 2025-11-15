@@ -8,7 +8,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
    <children>
       <Line endX="319.9999694824219" endY="0.1886882781982422" layoutY="26.0" startX="319.9999694824219" startY="419.6509704589844" stroke="#bababa" />
-      <AnchorPane prefHeight="480.0" prefWidth="319.0">
+      <AnchorPane prefHeight="600.0" prefWidth="800.0">
          <children>
             <Button layoutX="55.0" layoutY="201.0" mnemonicParsing="false" onAction="#handleFeladasButton" prefHeight="78.0" prefWidth="209.0" style="-fx-background-color: 00ffcc;" text="Csomag feladás">
                <font>
