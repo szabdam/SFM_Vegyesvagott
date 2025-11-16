@@ -6,14 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class CsomagAtvetelController {
+    public javafx.scene.text.Text txtValasz;
     private String IdFromTf;
 
     @FXML
@@ -32,6 +31,7 @@ public class CsomagAtvetelController {
 
     public void HandleEnter(ActionEvent actionEvent) {
         IdFromTf = ((TextField) actionEvent.getSource()).getText();
+        txtValasz.setText(IdFromTf);
         System.out.println("IdFromTf: " + IdFromTf);
     }
 }

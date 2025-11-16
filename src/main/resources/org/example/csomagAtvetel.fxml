@@ -6,15 +6,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.CsomagAtvetelController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.CsomagAtvetelController">
     <children>
-        <Text layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="800.0000000000001" />
+        <Text fx:id="txtValasz" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="700.0" AnchorPane.leftAnchor="50.0">
+         <font>
+            <Font size="36.0" />
+         </font></Text>
         <Text boundsType="VISUAL" layoutX="67.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Csomagazonosító megadása:" textAlignment="CENTER" wrappingWidth="200.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
             <font>
                 <Font size="24.0" />
             </font>
         </Text>
-        <TextField fx:id="tf" layoutX="293.0" layoutY="52.0" onAction="#HandleEnter" prefHeight="40.0" prefWidth="451.0" promptText="adadadad" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0">
+        <TextField fx:id="tfPackageID" layoutX="293.0" layoutY="52.0" onAction="#HandleEnter" prefHeight="40.0" prefWidth="451.0" promptText="adadadad" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0">
             <font>
                 <Font size="24.0" />
             </font>

@@ -25,12 +25,6 @@ public class CsomagFeladasController {
     private Button btnL;
 
     @FXML
-    private Button btnBack;
-
-    @FXML
-    private Button btnDone;
-
-    @FXML
     private ComboBox<String> cbAutomata;
 
     @FXML
