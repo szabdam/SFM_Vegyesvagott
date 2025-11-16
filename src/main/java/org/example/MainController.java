@@ -27,8 +27,15 @@ public class MainController {
         stage.show();
     }
 
-    public void handleAtvetelButton(ActionEvent actionEvent) {
-        System.out.println("atvetel");
+    public void handleAtvetelButton(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("CsomagAtvetel.fxml"));
+        Scene scene = new Scene(root);
+
+        // Stage lekérése a gomb eseményéből
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        stage.setScene(scene);
+        stage.show();
     }
 
 
