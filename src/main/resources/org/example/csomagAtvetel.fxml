@@ -14,7 +14,7 @@
                 <Font size="24.0" />
             </font>
         </Text>
-        <TextField fx:id="tf" layoutX="293.0" layoutY="52.0" prefHeight="40.0" prefWidth="451.0" promptText="adadadad" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0">
+        <TextField fx:id="tf" layoutX="293.0" layoutY="52.0" onAction="#HandleEnter" prefHeight="40.0" prefWidth="451.0" promptText="adadadad" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="50.0">
             <font>
                 <Font size="24.0" />
             </font>

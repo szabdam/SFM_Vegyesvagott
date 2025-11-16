@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class CsomagAtvetelController {
+    private String IdFromTf;
+
     @FXML
     private void initialize() {}
 
@@ -26,5 +28,10 @@ public class CsomagAtvetelController {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void HandleEnter(ActionEvent actionEvent) {
+        IdFromTf = ((TextField) actionEvent.getSource()).getText();
+        System.out.println("IdFromTf: " + IdFromTf);
     }
 }
