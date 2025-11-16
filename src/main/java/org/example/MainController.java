@@ -27,16 +27,6 @@ public class MainController {
         stage.show();
     }
 
-    @FXML
-    public void goToFeladas(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("csomagFeladas.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public void handleAtvetelButton(ActionEvent actionEvent) {
         System.out.println("atvetel");
     }
