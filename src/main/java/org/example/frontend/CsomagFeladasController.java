@@ -12,8 +12,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.model.Csomag;
 import org.example.model.CsomagService;
+import org.example.model.Csomagautomata;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CsomagFeladasController {
 
@@ -43,12 +46,17 @@ public class CsomagFeladasController {
 
     private final CsomagService csomagService = new CsomagService(); // vagy kapja kívülről
 
+
+
     @FXML
     private void initialize() {
+        List<String> automataNevek = new ArrayList<>();
+        for(Csomagautomata cs : csomagService.getAutomatak()){
+            automataNevek.add(cs.getCim());
+        }
+
         cbAutomata.getItems().addAll(
-                "Debrecen, Kassai út 26. - Automata #1",
-                "Debrecen, Piac utca 10. - Automata #2",
-                "Budapest, Kossuth tér 1. - Automata #3"
+                automataNevek
         );
 
         if (!cbAutomata.getItems().isEmpty()) {
@@ -108,7 +116,7 @@ public class CsomagFeladasController {
 
         System.out.println("Csomag: " + csomag);
 
-        csomagService.hozzaad(csomag);
+        csomagService.hozzaadCsomag(csomag);
     }
 
 

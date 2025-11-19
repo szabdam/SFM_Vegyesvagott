@@ -8,6 +8,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import org.example.model.CsomagService;
 import org.example.model.Csomagautomata;
 import org.example.model.Rekesz;
 
@@ -54,10 +55,19 @@ public class AdminController {
 
     private ObservableList<Csomagautomata> masterData = FXCollections.observableArrayList();
     private FilteredList<Csomagautomata> filteredData;
+    private CsomagService csomagService = new CsomagService();
 
     @FXML
     private void initialize() {
-        // 1) Oszlopok összekötése a Csomagautomata adataival
+
+        // =====================
+        // 0) Adatok betöltése a service-ből
+        // =====================
+        masterData.setAll(csomagService.getAutomatak());
+
+        // =====================
+        // 1) Oszlopok összekötése
+        // =====================
         colCim.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCim()));
 
@@ -79,19 +89,19 @@ public class AdminController {
 
         colAllapot.setCellValueFactory(cellData -> {
             Csomagautomata a = cellData.getValue();
-            // egyszerű példa: ha van szabad hely → OK, ha nincs → TELT
             String allapot = a.vanSzabadHely() ? "OK" : "TELT";
             return new SimpleStringProperty(allapot);
         });
 
-        // 2) Dummy automata adatok létrehozása a te osztályoddal
-        initDummyData();
-
-        // 3) Szűrhető lista
+        // =====================
+        // 2) Szűrhető lista
+        // =====================
         filteredData = new FilteredList<>(masterData, p -> true);
         tableAutomatak.setItems(filteredData);
 
-        // 4) Keresőmező figyelése
+        // =====================
+        // 3) Keresőmező figyelése
+        // =====================
         tfKereses.textProperty().addListener((obs, oldVal, newVal) -> {
             String filter = newVal == null ? "" : newVal.trim().toLowerCase();
             filteredData.setPredicate(a -> {
@@ -100,7 +110,9 @@ public class AdminController {
             });
         });
 
-        // 5) Karbantartás panel frissítése kijelöléskor
+        // =====================
+        // 4) Karbantartás panel frissítése
+        // =====================
         lblKarbantartas.setText("Karbantartás\nVálassz ki egy automatát a listából.");
 
         tableAutomatak.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
