@@ -6,9 +6,9 @@ public class Csomag {
     private String felado;
     private String megjegyzes;
     private String celautomata;
-    private String azonosito;
+    private int azonosito;
 
-    public Csomag(String meret, String cimzett, String felado, String megjegyzes, String celautomata, String azonosito) {
+    public Csomag(String meret, String cimzett, String felado, String megjegyzes, String celautomata, int azonosito) {
         this.meret = meret;
         this.cimzett = cimzett;
         this.felado = felado;
@@ -17,9 +17,9 @@ public class Csomag {
         this.azonosito = azonosito;
     }
 
-    public String getAzonosito() {return azonosito;}
+    public int getAzonosito() {return azonosito;}
 
-    public void setAzonosito(String azonosito) {this.azonosito = azonosito;}
+    public void setAzonosito(int azonosito) {this.azonosito = azonosito;}
 
     public String getMeret() {return meret;}
 

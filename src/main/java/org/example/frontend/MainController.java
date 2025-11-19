@@ -34,11 +34,14 @@ public class MainController {
     }
 
     public void handleAtvetelButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/org/example/csomagAtvetel.fxml"));
-        Scene scene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/csomagAtvetel.fxml"));
+        Parent root = loader.load();
+
+        CsomagAtvetelController atvetelController = loader.getController();
+        atvetelController.setService(App.globalService);  // <<< FONTOS
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+        stage.setScene(new Scene(root));
         stage.show();
     }
 

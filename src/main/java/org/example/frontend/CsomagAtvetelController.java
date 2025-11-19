@@ -34,8 +34,8 @@ public class CsomagAtvetelController {
 
     public void HandleEnter(ActionEvent actionEvent) {
         IdFromTf = ((TextField) actionEvent.getSource()).getText();
-        if (csomagService.isValidID(IdFromTf)) {
-            txtValasz.setText("A csomagja az " + csomagService.validIds.get(IdFromTf)+ " automatában található");
+        if (csomagService.validIds.containsKey(IdFromTf)) {
+            txtValasz.setText("A csomagja az " + csomagService.validIds.get(IdFromTf) + " automatában található");
         }
         else{txtValasz.setText("Nincs ilyen csomag");}
 

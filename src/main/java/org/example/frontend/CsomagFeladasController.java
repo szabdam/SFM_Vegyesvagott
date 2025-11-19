@@ -46,12 +46,13 @@ public class CsomagFeladasController {
 
     private CsomagService csomagService; // vagy kapja kívülről
 
-
+    private int cnt = 0;
+    @FXML
+    void btnS(ActionEvent event) {}
 
     @FXML
     private void initialize() {
         List<String> automataNevek = new ArrayList<>();
-
 
         cbAutomata.getItems().addAll(
                 automataNevek
@@ -110,7 +111,9 @@ public class CsomagFeladasController {
         String megjegyzes = tfMegjegyzes.getText();
         String automata = cbAutomata.getSelectionModel().getSelectedItem();
 
-        Csomag csomag = new Csomag(felado, cimzett, megjegyzes, selectedSize, automata, "1");
+        Csomag csomag = new Csomag(felado, cimzett, megjegyzes, selectedSize, automata, ++cnt);
+
+        csomagService.validIds.put(String.valueOf(cnt), automata);
 
         System.out.println("Csomag: " + csomag);
 
