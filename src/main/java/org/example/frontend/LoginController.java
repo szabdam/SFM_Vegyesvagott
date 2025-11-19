@@ -41,7 +41,17 @@ public class LoginController {
 
             Stage primaryStage = App.getPrimaryStage();
 
-            Parent root = FXMLLoader.load(App.class.getResource("admin.fxml"));
+            // --- FONTOS: NEM load(), hanem teljes FXMLLoader ---
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("admin.fxml"));
+            Parent root = loader.load();
+
+            // --- Controller lekérése ---
+            AdminController controller = loader.getController();
+
+            // --- KÖZÖS CSOMAG SERVICE átadása ---
+            controller.setService(App.globalService);
+
+            // --- Scene beállítása ---
             Scene adminScene = new Scene(root);
             primaryStage.setScene(adminScene);
             primaryStage.show();
@@ -50,6 +60,7 @@ public class LoginController {
             showError("Hibás felhasználónév vagy jelszó.");
         }
     }
+
 
     @FXML
     private void handleCancel() {

@@ -42,4 +42,7 @@ public class CsomagAtvetelController {
 
         System.out.println("IdFromTf: " + IdFromTf);
     }
+    public void setService(CsomagService service) {
+        this.csomagService = service;
+    }
 }

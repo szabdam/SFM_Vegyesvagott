@@ -44,16 +44,14 @@ public class CsomagFeladasController {
 
     private String selectedSize = null;
 
-    private final CsomagService csomagService = new CsomagService(); // vagy kapja kívülről
+    private CsomagService csomagService; // vagy kapja kívülről
 
 
 
     @FXML
     private void initialize() {
         List<String> automataNevek = new ArrayList<>();
-        for(Csomagautomata cs : csomagService.getAutomatak()){
-            automataNevek.add(cs.getCim());
-        }
+
 
         cbAutomata.getItems().addAll(
                 automataNevek
@@ -129,5 +127,14 @@ public class CsomagFeladasController {
 
         stage.setScene(scene);
         stage.show();
+    }
+    public void setService(CsomagService service) {
+        this.csomagService = service;
+
+        // Itt már BIZTOSAN nem null → itt töltsük fel a ComboBoxot
+        cbAutomata.getItems().clear();
+        for (Csomagautomata a : service.getAutomatak()) {
+            cbAutomata.getItems().add(a.getCim());
+        }
     }
 }

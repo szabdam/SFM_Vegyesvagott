@@ -69,9 +69,10 @@ public class AdminController {
     @FXML
     private Label lblKarbantartas;
 
-    // LISTÁK + SERVICE
-    private CsomagService csomagService = new CsomagService();
+    // --- KÖZÖS SERVICE (NEM példányosítjuk itt!) ---
+    private CsomagService csomagService;
 
+    // Listák
     private ObservableList<Csomagautomata> masterAutomataData = FXCollections.observableArrayList();
     private ObservableList<Csomag> masterCsomagData = FXCollections.observableArrayList();
 
@@ -84,15 +85,7 @@ public class AdminController {
     @FXML
     private void initialize() {
 
-        // ----------------------------------
-        // 0) Adatok betöltése service-ből
-        // ----------------------------------
-        masterAutomataData.setAll(csomagService.getAutomatak());
-        masterCsomagData.setAll(csomagService.getOsszesCsomag());
-
-        // ----------------------------------
         // 1) Automaták oszlopok
-        // ----------------------------------
         colCim.setCellValueFactory(cell ->
                 new SimpleStringProperty(cell.getValue().getCim()));
 
@@ -115,9 +108,7 @@ public class AdminController {
         colAllapot.setCellValueFactory(cell ->
                 new SimpleStringProperty(cell.getValue().vanSzabadHely() ? "OK" : "TELT"));
 
-        // ----------------------------------
         // 2) Csomagok oszlopok
-        // ----------------------------------
         colFelado.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().getFelado()));
 
@@ -127,33 +118,28 @@ public class AdminController {
         colCelautomata.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().getCelautomata()));
 
-        // ----------------------------------
-        // 3) Filterelt listák
-        // ----------------------------------
+        // 3) Filterelt listák (egyelőre üres master listákon)
         filteredAutomatak = new FilteredList<>(masterAutomataData, p -> true);
         filteredCsomagok = new FilteredList<>(masterCsomagData, p -> true);
 
         tableAutomatak.setItems(filteredAutomatak);
         tableCsomagok.setItems(filteredCsomagok);
 
-        // ----------------------------------
-        // 4) Kereső szűrés
-        // ----------------------------------
+        // 4) Kereső: mindkét listát szűri
         tfKereses.textProperty().addListener((obs, oldV, newV) -> {
             String filter = (newV == null) ? "" : newV.trim().toLowerCase();
 
-            filteredAutomatak.setPredicate(a -> a.getCim().toLowerCase().contains(filter));
+            filteredAutomatak.setPredicate(a ->
+                    filter.isEmpty() || a.getCim().toLowerCase().contains(filter));
 
             filteredCsomagok.setPredicate(c ->
-                    (c.getFelado() != null && c.getFelado().toLowerCase().contains(filter)) ||
-                            (c.getCimzett() != null && c.getCimzett().toLowerCase().contains(filter)) ||
-                            (c.getCelautomata() != null && c.getCelautomata().toLowerCase().contains(filter))
-            );
+                    filter.isEmpty()
+                            || (c.getFelado() != null && c.getFelado().toLowerCase().contains(filter))
+                            || (c.getCimzett() != null && c.getCimzett().toLowerCase().contains(filter))
+                            || (c.getCelautomata() != null && c.getCelautomata().toLowerCase().contains(filter)));
         });
 
-        // ----------------------------------
-        // 5) Induláskor: automaták nézet látható
-        // ----------------------------------
+        // 5) Induláskor az automaták nézet legyen látható
         showAutomatakView();
     }
 
@@ -193,9 +179,6 @@ public class AdminController {
         showCsomagokView();
     }
 
-    // =====================================================
-    //             EGYÉB GOMBOK – működnek tovább
-    // =====================================================
     @FXML
     private void handleSzures() {
         System.out.println("Szűrés panel majd ide jön.");
@@ -209,5 +192,16 @@ public class AdminController {
     @FXML
     private void handleModositas() {
         System.out.println("Módosítás funkció ide jön (automatánként).");
+    }
+
+    // =====================================================
+    //              SERVICE BEÁLLÍTÁSA KÍVÜLRŐL
+    // =====================================================
+    public void setService(CsomagService service) {
+        this.csomagService = service;
+
+        // Itt már BIZTOSAN NEM null, mert kívülről hívjuk bejelentkezés után
+        masterAutomataData.setAll(service.getAutomatak());
+        masterCsomagData.setAll(service.getOsszesCsomag());
     }
 }

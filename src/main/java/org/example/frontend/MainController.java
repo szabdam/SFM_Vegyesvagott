@@ -18,14 +18,18 @@ public class MainController {
     Button btnAdmin;
 
     @FXML
-    private void initialize() {}
+    private void initialize() {
+    }
 
     public void handleFeladasButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/org/example/csomagFeladas.fxml"));
-        Scene scene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/csomagFeladas.fxml"));
+        Parent root = loader.load();
+
+        CsomagFeladasController feladasController = loader.getController();
+        feladasController.setService(App.globalService);   // <-- ITT adjuk át
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+        stage.setScene(new Scene(root));
         stage.show();
     }
 
@@ -54,17 +58,18 @@ public class MainController {
         stage.showAndWait(); // itt megvárjuk, míg bejelentkezik vagy bezárja
 
         if (loginController.isLoginSuccessful()) {
-            // SIKERES LOGIN → itt váltunk admin.fxml-re a FŐ ablakon
             FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("/org/example/admin.fxml"));
             Parent adminRoot = adminLoader.load();
-            Scene adminScene = new Scene(adminRoot);
+
+            // <-- ITT adjuk át a service-t az AdminControllernek
+            AdminController adminController = adminLoader.getController();
+            adminController.setService(App.globalService);
 
             Stage primaryStage = (Stage) btnAdmin.getScene().getWindow();
-            primaryStage.setScene(adminScene);
+            primaryStage.setScene(new Scene(adminRoot));
             primaryStage.show();
         } else {
             System.out.println("Sikertelen / megszakított bejelentkezés.");
         }
     }
 }
-
