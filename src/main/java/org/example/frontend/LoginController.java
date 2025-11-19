@@ -22,7 +22,6 @@ public class LoginController {
     @FXML
     private PasswordField pfPassword;
 
-    // ide teheted pl. egy flaget, sikeres volt-e a login
     private boolean loginSuccessful = false;
 
     public boolean isLoginSuccessful() {
@@ -34,21 +33,18 @@ public class LoginController {
         String user = tfUsername.getText();
         String pass = pfPassword.getText();
 
-        if ("admin".equals(user) && "admin".equals(pass)) {
-            loginSuccessful = true;
+        if (user.equals("admin") && pass.equals("admin")) {
 
-            // bezárjuk a login popupot
-            Stage loginStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            // close login popup
+            Stage loginStage = (Stage) tfUsername.getScene().getWindow();
             loginStage.close();
 
-            // FŐ ablakra váltjuk az admin.fxml-t
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("admin.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
+            Stage primaryStage = App.getPrimaryStage();
 
-            Stage mainStage = App.getPrimaryStage();
-            mainStage.setScene(scene);
-            mainStage.show();
+            Parent root = FXMLLoader.load(App.class.getResource("admin.fxml"));
+            Scene adminScene = new Scene(root);
+            primaryStage.setScene(adminScene);
+            primaryStage.show();
 
         } else {
             showError("Hibás felhasználónév vagy jelszó.");
