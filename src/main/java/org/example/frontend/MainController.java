@@ -21,23 +21,19 @@ public class MainController {
     private void initialize() {}
 
     public void handleFeladasButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("csomagFeladas.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/org/example/csomagFeladas.fxml"));
         Scene scene = new Scene(root);
 
-        // Stage lekérése a gomb eseményéből
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
         stage.setScene(scene);
         stage.show();
     }
 
     public void handleAtvetelButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("csomagAtvetel.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/org/example/csomagAtvetel.fxml"));
         Scene scene = new Scene(root);
 
-        // Stage lekérése a gomb eseményéből
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
         stage.setScene(scene);
         stage.show();
     }
@@ -45,7 +41,7 @@ public class MainController {
 
     @FXML
     private void handleAdminButton() throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/org/example/login.fxml"));
         Parent root = loader.load();
 
         LoginController loginController = loader.getController();
@@ -59,7 +55,7 @@ public class MainController {
 
         if (loginController.isLoginSuccessful()) {
             // SIKERES LOGIN → itt váltunk admin.fxml-re a FŐ ablakon
-            FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("admin.fxml"));
+            FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("/org/example/admin.fxml"));
             Parent adminRoot = adminLoader.load();
             Scene adminScene = new Scene(adminRoot);
 

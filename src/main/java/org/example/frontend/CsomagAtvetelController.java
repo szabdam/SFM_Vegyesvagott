@@ -19,7 +19,7 @@ public class CsomagAtvetelController {
     private void initialize() {}
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/org/example/main.fxml"));
         Scene scene = new Scene(root);
 
         // Stage lekérése a gomb eseményéből
