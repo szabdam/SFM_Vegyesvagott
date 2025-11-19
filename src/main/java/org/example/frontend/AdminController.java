@@ -8,24 +8,25 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import org.example.model.Csomag;
 import org.example.model.CsomagService;
 import org.example.model.Csomagautomata;
 import org.example.model.Rekesz;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class AdminController {
 
+    // Bal oldali menü gombjai
     @FXML
     private Button btnAutomatak;
 
     @FXML
     private Button btnCsomagok;
 
+    // Kereső
     @FXML
     private TextField tfKereses;
 
+    // Felső gombok
     @FXML
     private Button btnSzures;
 
@@ -35,6 +36,7 @@ public class AdminController {
     @FXML
     private Button btnModositas;
 
+    // ------------ AUTOMATÁK TÁBLÁZAT ------------
     @FXML
     private TableView<Csomagautomata> tableAutomatak;
 
@@ -50,117 +52,153 @@ public class AdminController {
     @FXML
     private TableColumn<Csomagautomata, String> colAllapot;
 
+    // ------------ CSOMAGOK TÁBLÁZAT ------------
+    @FXML
+    private TableView<Csomag> tableCsomagok;
+
+    @FXML
+    private TableColumn<Csomag, String> colFelado;
+
+    @FXML
+    private TableColumn<Csomag, String> colCimzett;
+
+    @FXML
+    private TableColumn<Csomag, String> colCelautomata;
+
+    // Jobb oldali panel
     @FXML
     private Label lblKarbantartas;
 
-    private ObservableList<Csomagautomata> masterData = FXCollections.observableArrayList();
-    private FilteredList<Csomagautomata> filteredData;
+    // LISTÁK + SERVICE
     private CsomagService csomagService = new CsomagService();
 
+    private ObservableList<Csomagautomata> masterAutomataData = FXCollections.observableArrayList();
+    private ObservableList<Csomag> masterCsomagData = FXCollections.observableArrayList();
+
+    private FilteredList<Csomagautomata> filteredAutomatak;
+    private FilteredList<Csomag> filteredCsomagok;
+
+    // =====================================================
+    //                    INITIALIZE()
+    // =====================================================
     @FXML
     private void initialize() {
 
-        // =====================
-        // 0) Adatok betöltése a service-ből
-        // =====================
-        masterData.setAll(csomagService.getAutomatak());
+        // ----------------------------------
+        // 0) Adatok betöltése service-ből
+        // ----------------------------------
+        masterAutomataData.setAll(csomagService.getAutomatak());
+        masterCsomagData.setAll(csomagService.getOsszesCsomag());
 
-        // =====================
-        // 1) Oszlopok összekötése
-        // =====================
-        colCim.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCim()));
+        // ----------------------------------
+        // 1) Automaták oszlopok
+        // ----------------------------------
+        colCim.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getCim()));
 
-        colTelitettseg.setCellValueFactory(cellData -> {
-            Csomagautomata a = cellData.getValue();
+        colTelitettseg.setCellValueFactory(cell -> {
+            Csomagautomata a = cell.getValue();
             int total = a.getRekeszek().size();
             long foglalt = a.getRekeszek().stream().filter(Rekesz::isFoglalt).count();
             int percent = total == 0 ? 0 : (int) Math.round(foglalt * 100.0 / total);
             return new SimpleStringProperty(percent + " %");
         });
 
-        colSzabad.setCellValueFactory(cellData -> {
-            Csomagautomata a = cellData.getValue();
+        colSzabad.setCellValueFactory(cell -> {
+            Csomagautomata a = cell.getValue();
             int total = a.getRekeszek().size();
             long foglalt = a.getRekeszek().stream().filter(Rekesz::isFoglalt).count();
             int free = total - (int) foglalt;
             return new SimpleIntegerProperty(free).asObject();
         });
 
-        colAllapot.setCellValueFactory(cellData -> {
-            Csomagautomata a = cellData.getValue();
-            String allapot = a.vanSzabadHely() ? "OK" : "TELT";
-            return new SimpleStringProperty(allapot);
+        colAllapot.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().vanSzabadHely() ? "OK" : "TELT"));
+
+        // ----------------------------------
+        // 2) Csomagok oszlopok
+        // ----------------------------------
+        colFelado.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getFelado()));
+
+        colCimzett.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getCimzett()));
+
+        colCelautomata.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getCelautomata()));
+
+        // ----------------------------------
+        // 3) Filterelt listák
+        // ----------------------------------
+        filteredAutomatak = new FilteredList<>(masterAutomataData, p -> true);
+        filteredCsomagok = new FilteredList<>(masterCsomagData, p -> true);
+
+        tableAutomatak.setItems(filteredAutomatak);
+        tableCsomagok.setItems(filteredCsomagok);
+
+        // ----------------------------------
+        // 4) Kereső szűrés
+        // ----------------------------------
+        tfKereses.textProperty().addListener((obs, oldV, newV) -> {
+            String filter = (newV == null) ? "" : newV.trim().toLowerCase();
+
+            filteredAutomatak.setPredicate(a -> a.getCim().toLowerCase().contains(filter));
+
+            filteredCsomagok.setPredicate(c ->
+                    (c.getFelado() != null && c.getFelado().toLowerCase().contains(filter)) ||
+                            (c.getCimzett() != null && c.getCimzett().toLowerCase().contains(filter)) ||
+                            (c.getCelautomata() != null && c.getCelautomata().toLowerCase().contains(filter))
+            );
         });
 
-        // =====================
-        // 2) Szűrhető lista
-        // =====================
-        filteredData = new FilteredList<>(masterData, p -> true);
-        tableAutomatak.setItems(filteredData);
-
-        // =====================
-        // 3) Keresőmező figyelése
-        // =====================
-        tfKereses.textProperty().addListener((obs, oldVal, newVal) -> {
-            String filter = newVal == null ? "" : newVal.trim().toLowerCase();
-            filteredData.setPredicate(a -> {
-                if (filter.isEmpty()) return true;
-                return a.getCim().toLowerCase().contains(filter);
-            });
-        });
-
-        // =====================
-        // 4) Karbantartás panel frissítése
-        // =====================
-        lblKarbantartas.setText("Karbantartás\nVálassz ki egy automatát a listából.");
-
-        tableAutomatak.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
-            if (newSel != null) {
-                long foglalt = newSel.getRekeszek().stream().filter(Rekesz::isFoglalt).count();
-                int total = newSel.getRekeszek().size();
-                int free = total - (int) foglalt;
-
-                lblKarbantartas.setText(
-                        "Karbantartás\n\n" +
-                                "Cím: " + newSel.getCim() + "\n" +
-                                "Rekeszek száma: " + total + "\n" +
-                                "Szabad rekeszek: " + free + "\n" +
-                                "Van szabad hely: " + (newSel.vanSzabadHely() ? "igen" : "nem")
-                );
-            }
-        });
+        // ----------------------------------
+        // 5) Induláskor: automaták nézet látható
+        // ----------------------------------
+        showAutomatakView();
     }
 
-    // ----------------------------------------------------------------
-    // Dummy adatok létrehozása – CSAK frontend teszthez
-    // ----------------------------------------------------------------
-    private void initDummyData() {
-        // Példa rekeszméretek – ugyanaz a lista több automatához
-        List<String> meretek1 = Arrays.asList("kicsi", "kicsi", "közepes", "közepes", "nagy");
-        List<String> meretek2 = Arrays.asList("kicsi", "közepes", "közepes", "nagy", "nagy", "nagy");
+    // =====================================================
+    //       NÉZETVÁLTÓK (automaták <-> csomagok)
+    // =====================================================
+    private void showAutomatakView() {
+        tableAutomatak.setVisible(true);
+        tableAutomatak.setManaged(true);
 
-        Csomagautomata a1 = new Csomagautomata("Debrecen, Kassai út 26.", meretek1);
-        Csomagautomata a2 = new Csomagautomata("Debrecen, Piac utca 10.", meretek2);
-        Csomagautomata a3 = new Csomagautomata("Budapest, Kossuth tér 1.", meretek1);
+        tableCsomagok.setVisible(false);
+        tableCsomagok.setManaged(false);
 
-        // jelöljünk foglaltnak pár rekeszt (feltételezve, hogy Rekesz-nek van setFoglalt())
-        a1.getRekeszek().get(0).setFoglalt(true);
-        a1.getRekeszek().get(1).setFoglalt(true);
-
-        a2.getRekeszek().forEach(r -> r.setFoglalt(true)); // teljesen tele → TELT
-
-        a3.getRekeszek().get(2).setFoglalt(true);
-
-        masterData.addAll(a1, a2, a3);
+        lblKarbantartas.setText("Karbantartás\nVálassz ki egy automatát.");
     }
 
-    // ----------------------------------------------------------------
-    // Gombkezelők – egyelőre csak log üzenetek
-    // ----------------------------------------------------------------
+    private void showCsomagokView() {
+        tableAutomatak.setVisible(false);
+        tableAutomatak.setManaged(false);
+
+        tableCsomagok.setVisible(true);
+        tableCsomagok.setManaged(true);
+
+        lblKarbantartas.setText("Csomagok listája");
+    }
+
+    // =====================================================
+    //                     MENÜGOMBOK
+    // =====================================================
+    @FXML
+    private void handleAutomatakMenu() {
+        showAutomatakView();
+    }
+
+    @FXML
+    private void handleCsomagokMenu() {
+        showCsomagokView();
+    }
+
+    // =====================================================
+    //             EGYÉB GOMBOK – működnek tovább
+    // =====================================================
     @FXML
     private void handleSzures() {
-        System.out.println("Szűrés gomb (külön panel/ablak majd ide jöhet).");
+        System.out.println("Szűrés panel majd ide jön.");
     }
 
     @FXML
@@ -170,22 +208,6 @@ public class AdminController {
 
     @FXML
     private void handleModositas() {
-        Csomagautomata selected = tableAutomatak.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            System.out.println("Módosítás erre az automatára: " + selected.getCim());
-            // TODO: itt jöhet külön FXML a módosításhoz
-        } else {
-            System.out.println("Nincs kiválasztott automata.");
-        }
-    }
-
-    @FXML
-    private void handleAutomatakMenu() {
-        System.out.println("Automaták menü.");
-    }
-
-    @FXML
-    private void handleCsomagokMenu() {
-        System.out.println("Csomagok menü.");
+        System.out.println("Módosítás funkció ide jön (automatánként).");
     }
 }

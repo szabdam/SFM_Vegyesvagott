@@ -42,7 +42,4 @@ public class CsomagAtvetelController {
 
         System.out.println("IdFromTf: " + IdFromTf);
     }
-
-    /*A csomagja az XYZ automatában található*/
-    /*Nincs ilyen csomag*/
 }

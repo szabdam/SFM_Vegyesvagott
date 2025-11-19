@@ -11,9 +11,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.AdminController">
+<BorderPane prefHeight="600.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/23.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.frontend.AdminController">
 
-    <!-- Bal oldali menü -->
+    <!-- BAL OLDALI MENÜ -->
     <left>
         <VBox prefWidth="140.0" spacing="10.0" style="-fx-background-color: #F5F5F5;">
             <padding>
@@ -26,7 +29,7 @@
         </VBox>
     </left>
 
-    <!-- Középső rész: kereső + táblázat -->
+    <!-- KÖZÉPSŐ RÉSZ -->
     <center>
         <VBox spacing="10.0">
             <padding>
@@ -34,18 +37,17 @@
             </padding>
             <children>
 
-                <!-- Felső sor: kereső + gombok -->
+                <!-- FELSŐ SOR -->
                 <HBox spacing="10.0">
                     <children>
                         <TextField fx:id="tfKereses" promptText="Kereső..." HBox.hgrow="ALWAYS" />
-
                         <Button fx:id="btnSzures" onAction="#handleSzures" text="Szűrés" />
                         <Button fx:id="btnAttekintes" onAction="#handleAttekintes" text="Áttekintés" />
                         <Button fx:id="btnModositas" onAction="#handleModositas" text="Módosítás" />
                     </children>
                 </HBox>
 
-                <!-- Automaták táblázata -->
+                <!-- AUTOMATÁK TÁBLÁZATA -->
                 <TableView fx:id="tableAutomatak" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colCim" prefWidth="250.0" text="Cím" />
@@ -55,16 +57,27 @@
                     </columns>
                 </TableView>
 
+                <!-- CSOMAGOK TÁBLÁZATA (rejtve indul) -->
+                <TableView fx:id="tableCsomagok" VBox.vgrow="ALWAYS"
+                           visible="false" managed="false">
+                    <columns>
+                        <TableColumn fx:id="colFelado" prefWidth="200.0" text="Feladó" />
+                        <TableColumn fx:id="colCimzett" prefWidth="200.0" text="Címzett" />
+                        <TableColumn fx:id="colCelautomata" prefWidth="250.0" text="Cél automata" />
+                    </columns>
+                </TableView>
+
             </children>
         </VBox>
     </center>
 
-    <!-- Jobb oldali "Karbantartás" panel -->
+    <!-- JOBB OLDALI PANEL -->
     <right>
-        <AnchorPane prefWidth="200.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC;">
+        <AnchorPane prefWidth="200.0"
+                    style="-fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC;">
             <children>
-                <Label fx:id="lblKarbantartas" layoutX="20.0" layoutY="20.0" text="Karbantartás" />
-                <!-- ide jöhetnek majd karbantartási gombok, státuszok stb. -->
+                <Label fx:id="lblKarbantartas" layoutX="20.0" layoutY="20.0"
+                       text="Karbantartás" />
             </children>
         </AnchorPane>
     </right>
