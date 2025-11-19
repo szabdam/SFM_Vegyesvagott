@@ -8,12 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.model.CsomagService;
 
 import java.io.IOException;
 
 public class CsomagAtvetelController {
     public javafx.scene.text.Text txtValasz;
     private String IdFromTf;
+
+    CsomagService csomagService =  new CsomagService();
 
     @FXML
     private void initialize() {}
@@ -31,7 +34,15 @@ public class CsomagAtvetelController {
 
     public void HandleEnter(ActionEvent actionEvent) {
         IdFromTf = ((TextField) actionEvent.getSource()).getText();
-        txtValasz.setText(IdFromTf);
+        if (csomagService.isValidID(IdFromTf)) {
+            txtValasz.setText("A csomagja az " + csomagService.validIds.get(IdFromTf)+ " automatában található");
+        }
+        else{txtValasz.setText("Nincs ilyen csomag");}
+
+
         System.out.println("IdFromTf: " + IdFromTf);
     }
+
+    /*A csomagja az XYZ automatában található*/
+    /*Nincs ilyen csomag*/
 }
