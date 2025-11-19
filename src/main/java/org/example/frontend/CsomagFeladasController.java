@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.model.Csomag;
+import org.example.model.CsomagService;
 
 import java.io.IOException;
 
@@ -39,6 +41,7 @@ public class CsomagFeladasController {
 
     private String selectedSize = null;
 
+    private final CsomagService csomagService = new CsomagService(); // vagy kapja kívülről
 
     @FXML
     private void initialize() {
@@ -101,14 +104,13 @@ public class CsomagFeladasController {
         String megjegyzes = tfMegjegyzes.getText();
         String automata = cbAutomata.getSelectionModel().getSelectedItem();
 
-        System.out.println("Feladó    : " + felado);
-        System.out.println("Címzett   : " + cimzett);
-        System.out.println("Megjegyzés: " + megjegyzes);
-        System.out.println("Méret     : " + selectedSize);
-        System.out.println("Automata  : " + automata);
+        Csomag csomag = new Csomag(felado, cimzett, megjegyzes, selectedSize, automata, "1");
 
-        // TODO: itt lehet majd csomag objektumot létrehozni, backendnek átadni stb.
+        System.out.println("Csomag: " + csomag);
+
+        csomagService.hozzaad(csomag);
     }
+
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/org/example/main.fxml"));

@@ -2,25 +2,54 @@ package org.example.model;
 
 public class Csomag {
     private String meret; // "kicsi", "közepes", "nagy"
-    private String hovaMegy;
-    private double suly;
+    private String cimzett;
+    private String felado;
+    private String megjegyzes;
+    private String celautomata;
+    private String azonosito;
 
-    public Csomag(String meret, String hovaMegy, double suly) {
+    public Csomag(String meret, String cimzett, String felado, String megjegyzes, String celautomata, String azonosito) {
         this.meret = meret;
-        this.hovaMegy = hovaMegy;
-        this.suly = suly;
+        this.cimzett = cimzett;
+        this.felado = felado;
+        this.megjegyzes = megjegyzes;
+        this.celautomata = celautomata;
+        this.azonosito = azonosito;
     }
 
-    public String getMeret() { return meret; }
-    public String getHovaMegy() { return hovaMegy; }
-    public double getSuly() { return suly; }
+    public String getAzonosito() {return azonosito;}
+
+    public void setAzonosito(String azonosito) {this.azonosito = azonosito;}
+
+    public String getMeret() {return meret;}
+
+    public void setMeret(String meret) {this.meret = meret;}
+
+    public String getCimzett() {return cimzett;}
+
+    public void setCimzett(String cimzett) {this.cimzett = cimzett;}
+
+    public String getFelado() {return felado;}
+
+    public void setFelado(String felado) {this.felado = felado;}
+
+    public String getMegjegyzes() {return megjegyzes;}
+
+    public void setMegjegyzes(String megjegyzes) {this.megjegyzes = megjegyzes;}
+
+    public String getCelautomata() {return celautomata;}
+
+    public void setCelautomata(String celautomata) {this.celautomata = celautomata;}
 
     @Override
     public String toString() {
         return "Csomag{" +
-                "méret='" + meret + '\'' +
-                ", hová megy='" + hovaMegy + '\'' +
-                ", súly=" + suly +
-                " kg}";
+                "meret='" + meret + '\'' +
+                ", cimzett='" + cimzett + '\'' +
+                ", felado='" + felado + '\'' +
+                ", megjegyzes='" + megjegyzes + '\'' +
+                ", celautomata='" + celautomata + '\'' +
+                ", azonosito='" + azonosito +
+                '}';
     }
 }
