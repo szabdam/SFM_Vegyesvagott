@@ -21,7 +21,7 @@ public class MainController {
     private void initialize() {}
 
     public void handleFeladasButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("CsomagFeladas.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("csomagFeladas.fxml"));
         Scene scene = new Scene(root);
 
         // Stage lekérése a gomb eseményéből
@@ -32,7 +32,7 @@ public class MainController {
     }
 
     public void handleAtvetelButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("CsomagAtvetel.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("csomagAtvetel.fxml"));
         Scene scene = new Scene(root);
 
         // Stage lekérése a gomb eseményéből
