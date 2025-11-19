@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.App;
@@ -14,9 +15,10 @@ import java.io.IOException;
 
 public class MainController {
     @FXML
-    private void initialize() {
+    Button btnAdmin;
 
-    }
+    @FXML
+    private void initialize() {}
 
     public void handleFeladasButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("CsomagFeladas.fxml"));
@@ -41,26 +43,31 @@ public class MainController {
     }
 
 
-    public void handleAdminButton(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void handleAdminButton() throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
         Parent root = loader.load();
 
-        // controller lekérése
         LoginController loginController = loader.getController();
 
         Stage stage = new Stage();
         stage.setTitle("Bejelentkezés");
-        stage.initModality(Modality.APPLICATION_MODAL); // blokkolja az alatta lévő ablakot
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.setResizable(false);
-        stage.showAndWait(); // megvárjuk, míg bezárják
+        stage.showAndWait(); // itt megvárjuk, míg bejelentkezik vagy bezárja
 
-        // Itt tudod ellenőrizni, sikeres volt-e a login
         if (loginController.isLoginSuccessful()) {
-            System.out.println("Sikeres bejelentkezés – mehet az admin felület!");
-            // pl. itt hívhatsz App.switchScene("admin_main.fxml")-t, ha van ilyen
+            // SIKERES LOGIN → itt váltunk admin.fxml-re a FŐ ablakon
+            FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("admin.fxml"));
+            Parent adminRoot = adminLoader.load();
+            Scene adminScene = new Scene(adminRoot);
+
+            Stage primaryStage = (Stage) btnAdmin.getScene().getWindow();
+            primaryStage.setScene(adminScene);
+            primaryStage.show();
         } else {
-            System.out.println("Bejelentkezés megszakítva vagy sikertelen.");
+            System.out.println("Sikertelen / megszakított bejelentkezés.");
         }
     }
 }

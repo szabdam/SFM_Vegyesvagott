@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.example.App;
 
 import java.io.IOException;
 
@@ -33,20 +34,22 @@ public class LoginController {
         String user = tfUsername.getText();
         String pass = pfPassword.getText();
 
-        // Itt jönne az "igazi" ellenőrzés (adatbázis, config, stb.)
-        // Most egyszerű, hardcode-olt példa:
         if ("admin".equals(user) && "admin".equals(pass)) {
             loginSuccessful = true;
-            closeWindow();
 
-            Parent root = FXMLLoader.load(getClass().getResource("admin.fxml"));
+            // bezárjuk a login popupot
+            Stage loginStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            loginStage.close();
+
+            // FŐ ablakra váltjuk az admin.fxml-t
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("admin.fxml"));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
 
-            // Stage lekérése a gomb eseményéből
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Stage mainStage = App.getPrimaryStage();
+            mainStage.setScene(scene);
+            mainStage.show();
 
-            stage.setScene(scene);
-            stage.show();
         } else {
             showError("Hibás felhasználónév vagy jelszó.");
         }
