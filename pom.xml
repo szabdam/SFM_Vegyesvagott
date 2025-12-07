@@ -27,6 +27,14 @@
       <artifactId>javafx-fxml</artifactId>
       <version>${javafx.version}</version>
     </dependency>
+
+    <!-- h2 adatbázis -->
+    <dependency>
+      <groupId>com.h2database</groupId>     <!-- Ki fejlesztette -->
+      <artifactId>h2</artifactId>            <!-- Csomag neve -->
+      <version>2.2.224</version>             <!-- Verzió -->
+    </dependency>
+
   </dependencies>
 
   <build>
