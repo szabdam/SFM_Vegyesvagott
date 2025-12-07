@@ -1,8 +1,18 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "REKESZEK")
 public class Rekesz {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "MERET", nullable = false)
     private String meret;
+
+    @Column(name = "FOGLALT", nullable = false)
     private boolean foglalt;
 
     public Rekesz(int id, String meret) {
