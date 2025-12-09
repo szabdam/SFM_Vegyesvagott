@@ -47,7 +47,7 @@ public class CsomagFeladasController {
     private TextField tfMegjegyzes;
 
     @FXML
-    private Label lblAzonosito;
+    private TextField tfCsomagKod;
 
 
     private String selectedSize = null;
@@ -151,10 +151,8 @@ public class CsomagFeladasController {
 
         Csomag mentett = csomagService.saveCsomag(csomag);
 
-        lblAzonosito.setText("Csomagkód: " + mentett.getCsomagKod());
-        lblAzonosito.setVisible(true);
-
-
+        tfCsomagKod.setText("Csomagkód: " + mentett.getCsomagKod());
+        tfCsomagKod.setVisible(true);
 
         System.out.println("Csomag mentve: " + csomag);
     }

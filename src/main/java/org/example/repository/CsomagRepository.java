@@ -12,4 +12,5 @@ public interface CsomagRepository extends JpaRepository<Csomag, Long> {
     // Pl.: findByMeret("kicsi")
     java.util.List<Csomag> findByMeret(String meret);
     Csomag findByAzonosito(Long azonosito);
+    Optional<Csomag> findByCsomagKod(String csomagKod);
 }

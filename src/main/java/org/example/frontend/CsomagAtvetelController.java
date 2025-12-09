@@ -52,27 +52,30 @@ public class CsomagAtvetelController {
         stage.show();
     }
 
-    public void HandleEnter(ActionEvent actionEvent) {
+    @FXML
+    private void HandleEnter() {
 
-        String idText = tfPackageID.getText().trim();
+        String kod = tfPackageID.getText().trim();
 
-        Long id;
-        try {
-            id = Long.parseLong(idText);
-        } catch (NumberFormatException e) {
-            txtValasz.setText("Érvénytelen azonosító!");
+        if (kod.isEmpty()) {
+            txtValasz.setText("Kérjük, adja meg a csomagkódot!");
             return;
         }
 
-        Csomag csomag = csomagService.getByAzonosito(id);
+        // keresés adatbázisban
+        var talalat = csomagService.findByCsomagKod(kod);
 
-        if (csomag == null) {
-            txtValasz.setText("Nincs ilyen csomag az adatbázisban.");
-        } else {
-            txtValasz.setText(
-                    "A csomag az alábbi automatában található:\n" +
-                            csomag.getCelautomata()
-            );
+        if (talalat.isEmpty()) {
+            txtValasz.setText("Nincs ilyen csomag a rendszerben: " + kod);
+            return;
         }
+
+        Csomag c = talalat.get();
+
+        txtValasz.setText(
+                        "Címzett: " + c.getCimzett() + "\n" +
+                        "Feladó: " + c.getFelado() + "\n" +
+                        "Automata: " + c.getCelautomata()
+        );
     }
 }

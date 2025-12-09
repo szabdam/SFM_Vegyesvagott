@@ -2,8 +2,11 @@ package org.example.service;
 
 import org.example.model.Csomag;
 import java.util.List;
+import java.util.Optional;
 
 public interface CsomagService {
+
+    Optional<Csomag> findByCsomagKod(String kod);
 
     Csomag getByAzonosito(Long id);
 

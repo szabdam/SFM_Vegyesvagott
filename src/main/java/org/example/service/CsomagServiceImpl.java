@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CsomagServiceImpl implements CsomagService {
@@ -32,6 +33,11 @@ public class CsomagServiceImpl implements CsomagService {
     @Override
     public Csomag getByAzonosito(Long id) {
         return csomagRepository.findByAzonosito(id);
+    }
+
+    @Override
+    public Optional<Csomag> findByCsomagKod(String kod) {
+        return csomagRepository.findByCsomagKod(kod);
     }
 
     @Override
