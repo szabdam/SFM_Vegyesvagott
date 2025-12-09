@@ -6,8 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import javafx.stage.Stage;
 import org.example.model.Csomag;
 import org.example.model.Csomagautomata;
 import org.example.model.Rekesz;
@@ -16,8 +20,13 @@ import org.example.service.CsomagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import org.example.service.AutomataService;
+
+
 @Component
 public class AdminController {
+
 
     @Autowired
     private CsomagService csomagService;
@@ -129,8 +138,8 @@ public class AdminController {
                 new SimpleStringProperty(c.getValue().getCelautomata()));
 
         // --- Adatok betöltése JPA-ból ---
-        masterAutomataData.setAll(automataService.getAllAutomatak());
-        masterCsomagData.setAll(csomagService.getAllCsomagok());
+        //masterAutomataData.setAll(automataService.getAllAutomatak());
+        //masterCsomagData.setAll(csomagService.getAllCsomagok());
 
         // 3) Filterelt listák (egyelőre üres master listákon)
         filteredAutomatak = new FilteredList<>(masterAutomataData, p -> true);
@@ -208,16 +217,23 @@ public class AdminController {
         System.out.println("Módosítás funkció ide jön (automatánként).");
     }
 
-    // =====================================================
-    //              SERVICE BEÁLLÍTÁSA KÍVÜLRŐL
-    // =====================================================
-    /*
-    public void setService(CsomagService service) {
-        this.csomagService = service;
+    @FXML
+    private void handleKilepes() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/main.fxml"));
 
-        // Itt már BIZTOSAN NEM null, mert kívülről hívjuk bejelentkezés után
-        masterAutomataData.setAll(service.getAutomatak());
-        masterCsomagData.setAll(service.getOsszesCsomag());
+        // Spring esetén:
+        loader.setControllerFactory(org.example.Launcher.context::getBean);
+
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+
+        Stage stage = (Stage) btnAutomatak.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
-     */
+
+    public void loadData() {
+        masterAutomataData.setAll(automataService.getAllAutomatak());
+        masterCsomagData.setAll(csomagService.getAllCsomagok());
+    }
 }

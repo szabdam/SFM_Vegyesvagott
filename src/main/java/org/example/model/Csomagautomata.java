@@ -16,7 +16,7 @@ public class Csomagautomata {
     @Column(name = "CIM", unique = true, nullable = false)
     private String cim;
 
-    @OneToMany(mappedBy = "automata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "automata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Rekesz> rekeszek = new ArrayList<>();
 
     public Csomagautomata() {

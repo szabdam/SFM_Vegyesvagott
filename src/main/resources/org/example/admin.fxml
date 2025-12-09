@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import org.example.frontend.AdminController?>
 
 <BorderPane prefHeight="600.0" prefWidth="1000.0"
             xmlns="http://javafx.com/javafx/23.0.2"
@@ -78,6 +79,13 @@
             <children>
                 <Label fx:id="lblKarbantartas" layoutX="20.0" layoutY="20.0"
                        text="Karbantartás" />
+                <!--Kilepes gomb -->
+                <Button fx:id="btnKilepes"
+                        text="Kilépés"
+                        layoutX="50.0" layoutY="540.0"
+                        onAction="#handleKilepes"
+                        prefWidth="100"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold;"/>
             </children>
         </AnchorPane>
     </right>

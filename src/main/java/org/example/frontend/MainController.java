@@ -72,13 +72,16 @@ public class MainController {
         loginStage.setResizable(false);
         loginStage.showAndWait();
 
-        // Ha sikeres login → admin felület betöltése
         if (loginController.isLoginSuccessful()) {
 
             FXMLLoader adminLoader = new FXMLLoader(getClass().getResource("/org/example/admin.fxml"));
             adminLoader.setControllerFactory(org.example.Launcher.context::getBean);
 
             Parent adminRoot = adminLoader.load();
+
+            //
+            AdminController adminController = adminLoader.getController();
+            adminController.loadData();
 
             Stage mainStage = (Stage) btnAdmin.getScene().getWindow();
             mainStage.setScene(new Scene(adminRoot));
