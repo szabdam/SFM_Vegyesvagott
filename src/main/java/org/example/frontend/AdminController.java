@@ -167,7 +167,8 @@ public class AdminController {
                     filter.isEmpty()
                             || (c.getFelado() != null && c.getFelado().toLowerCase().contains(filter))
                             || (c.getCimzett() != null && c.getCimzett().toLowerCase().contains(filter))
-                            || (c.getCelautomata() != null && c.getCelautomata().toLowerCase().contains(filter)));
+                            || (c.getCelautomata() != null && c.getCelautomata().toLowerCase().contains(filter))
+                            || (c.getCsomagKod() != null && c.getCsomagKod().toLowerCase().contains(filter)));
         });
 
         // 5) Induláskor az automaták nézet legyen látható
