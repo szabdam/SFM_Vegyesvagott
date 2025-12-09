@@ -11,13 +11,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.model.Csomag;
-import org.example.model.CsomagService;
 import org.example.model.Csomagautomata;
+import org.example.service.AutomataService;
+import org.example.service.CsomagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CsomagFeladasController {
 
     @FXML
@@ -44,19 +48,30 @@ public class CsomagFeladasController {
 
     private String selectedSize = null;
 
-    private CsomagService csomagService; // vagy kapja kívülről
+    private CsomagService csomagService; // vagy kapja kívülrőlú
+    private final AutomataService automataService;
+
+    @Autowired
+    public CsomagFeladasController(CsomagService csomagService,
+                                   AutomataService automataService) {
+        this.csomagService = csomagService;
+        this.automataService = automataService;
+    }
 
     private int cnt = 0;
+
     @FXML
     void btnS(ActionEvent event) {}
 
     @FXML
     private void initialize() {
-        List<String> automataNevek = new ArrayList<>();
+        // AUTOMATÁK BETÖLTÉSE AZ ADATBÁZISBÓL
+        List<Csomagautomata> automatak = automataService.getAllAutomatak();
 
-        cbAutomata.getItems().addAll(
-                automataNevek
-        );
+        cbAutomata.getItems().clear();
+        for (Csomagautomata a : automatak) {
+            cbAutomata.getItems().add(a.getCim());
+        }
 
         if (!cbAutomata.getItems().isEmpty()) {
             cbAutomata.getSelectionModel().selectFirst();
@@ -105,39 +120,58 @@ public class CsomagFeladasController {
     }
 
 
+    @FXML
     public void handleDone() {
-        String felado = tfFelado.getText();
-        String cimzett = tfCimzett.getText();
-        String megjegyzes = tfMegjegyzes.getText();
+        if (selectedSize == null) {
+            System.out.println("Nincs méret kiválasztva.");
+            return;
+        }
+
+        String felado = tfFelado.getText().trim();
+        String cimzett = tfCimzett.getText().trim();
+        String megjegyzes = tfMegjegyzes.getText().trim();
         String automata = cbAutomata.getSelectionModel().getSelectedItem();
 
-        Csomag csomag = new Csomag(felado, cimzett, megjegyzes, selectedSize, automata);
+        if (felado.isEmpty() || cimzett.isEmpty() || automata == null) {
+            System.out.println("Hiányzó adatok!");
+            return;
+        }
 
-        csomagService.validIds.put(String.valueOf(cnt), automata);
+        Csomag csomag = new Csomag(
+                selectedSize,   // meret
+                cimzett,
+                felado,
+                megjegyzes,
+                automata
+        );
 
-        System.out.println("Csomag: " + csomag);
+        csomagService.saveCsomag(csomag);
 
-        csomagService.hozzaadCsomag(csomag);
+        System.out.println("Csomag mentve: " + csomag);
     }
 
 
+    @FXML
     public void handleBack(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/org/example/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/main.fxml"));
+        loader.setControllerFactory(org.example.Launcher.context::getBean);
+
+        Parent root = loader.load();
         Scene scene = new Scene(root);
 
-        // Stage lekérése a gomb eseményéből
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
         stage.setScene(scene);
         stage.show();
     }
+
     public void setService(CsomagService service) {
         this.csomagService = service;
 
-        // Itt már BIZTOSAN nem null → itt töltsük fel a ComboBoxot
         cbAutomata.getItems().clear();
-        for (Csomagautomata a : service.getAutomatak()) {
+        for (Csomagautomata a : automataService.getAllAutomatak()) {
             cbAutomata.getItems().add(a.getCim());
         }
     }
+
+
 }

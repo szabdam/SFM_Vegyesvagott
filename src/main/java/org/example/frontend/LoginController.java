@@ -11,9 +11,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.example.App;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class LoginController {
 
     @FXML
@@ -29,35 +31,21 @@ public class LoginController {
     }
 
     @FXML
-    private void handleLogin(ActionEvent actionEvent) throws IOException {
+    private void handleLogin(ActionEvent event) {
+
         String user = tfUsername.getText();
         String pass = pfPassword.getText();
 
         if (user.equals("admin") && pass.equals("admin")) {
 
-            // close login popup
-            Stage loginStage = (Stage) tfUsername.getScene().getWindow();
-            loginStage.close();
+            loginSuccessful = true;
 
-            Stage primaryStage = App.getPrimaryStage();
-
-            // --- FONTOS: NEM load(), hanem teljes FXMLLoader ---
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("admin.fxml"));
-            Parent root = loader.load();
-
-            // --- Controller lekérése ---
-            AdminController controller = loader.getController();
-
-            // --- KÖZÖS CSOMAG SERVICE átadása ---
-            controller.setService(App.globalService);
-
-            // --- Scene beállítása ---
-            Scene adminScene = new Scene(root);
-            primaryStage.setScene(adminScene);
-            primaryStage.show();
+            // popup bezárása
+            Stage stage = (Stage) tfUsername.getScene().getWindow();
+            stage.close();
 
         } else {
-            showError("Hibás felhasználónév vagy jelszó.");
+            showError("Hibás felhasználónév vagy jelszó!");
         }
     }
 

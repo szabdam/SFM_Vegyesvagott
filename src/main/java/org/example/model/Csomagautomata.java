@@ -22,6 +22,10 @@ public class Csomagautomata {
     public Csomagautomata() {
     }
 
+    public Csomagautomata(String cim) {
+        this.cim = cim;
+    }
+
     /**
      * Konstruktor különböző méretű rekeszekhez
      * @param cim Automata címe

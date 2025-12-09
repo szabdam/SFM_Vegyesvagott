@@ -10,9 +10,13 @@ import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.App;
+import org.example.model.Csomagautomata;
+import org.example.service.CsomagService;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class MainController {
     @FXML
     Button btnAdmin;
@@ -21,58 +25,64 @@ public class MainController {
     private void initialize() {
     }
 
-    public void handleFeladasButton(ActionEvent actionEvent) throws IOException {
+
+    public void handleFeladasButton(ActionEvent event) throws IOException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/csomagFeladas.fxml"));
+        loader.setControllerFactory(org.example.Launcher.context::getBean);
+
         Parent root = loader.load();
 
-        CsomagFeladasController feladasController = loader.getController();
-        feladasController.setService(App.globalService);   // <-- ITT adjuk át
+        // --- Itt kérjük le a controllert ---
+        CsomagFeladasController controller = loader.getController();
 
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        // --- Itt adjuk át a service-t ---
+        controller.setService(org.example.Launcher.context.getBean(CsomagService.class));
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
 
-    public void handleAtvetelButton(ActionEvent actionEvent) throws IOException {
+    public void handleAtvetelButton(ActionEvent event) throws IOException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/csomagAtvetel.fxml"));
+        loader.setControllerFactory(org.example.Launcher.context::getBean);
+
         Parent root = loader.load();
 
-        CsomagAtvetelController atvetelController = loader.getController();
-        atvetelController.setService(App.globalService);  // <<< FONTOS
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
-
 
     @FXML
     private void handleAdminButton() throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/org/example/login.fxml"));
-        Parent root = loader.load();
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/login.fxml"));
+        loader.setControllerFactory(org.example.Launcher.context::getBean);
+
+        Parent root = loader.load();
         LoginController loginController = loader.getController();
 
-        Stage stage = new Stage();
-        stage.setTitle("Bejelentkezés");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.showAndWait(); // itt megvárjuk, míg bejelentkezik vagy bezárja
+        Stage loginStage = new Stage();
+        loginStage.setTitle("Bejelentkezés");
+        loginStage.initModality(Modality.APPLICATION_MODAL);
+        loginStage.setScene(new Scene(root));
+        loginStage.setResizable(false);
+        loginStage.showAndWait();
 
+        // Ha sikeres login → admin felület betöltése
         if (loginController.isLoginSuccessful()) {
-            FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("/org/example/admin.fxml"));
+
+            FXMLLoader adminLoader = new FXMLLoader(getClass().getResource("/org/example/admin.fxml"));
+            adminLoader.setControllerFactory(org.example.Launcher.context::getBean);
+
             Parent adminRoot = adminLoader.load();
 
-            // <-- ITT adjuk át a service-t az AdminControllernek
-            AdminController adminController = adminLoader.getController();
-            adminController.setService(App.globalService);
-
-            Stage primaryStage = (Stage) btnAdmin.getScene().getWindow();
-            primaryStage.setScene(new Scene(adminRoot));
-            primaryStage.show();
-        } else {
-            System.out.println("Sikertelen / megszakított bejelentkezés.");
+            Stage mainStage = (Stage) btnAdmin.getScene().getWindow();
+            mainStage.setScene(new Scene(adminRoot));
+            mainStage.show();
         }
     }
 }

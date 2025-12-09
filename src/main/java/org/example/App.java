@@ -6,19 +6,23 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.model.CsomagService;
 
 public class App extends Application {
 
     private static Stage primaryStage;
-    public static CsomagService globalService = new CsomagService();
+    //public static CsomagService globalService = new CsomagService();
 
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
 
-        var loader = new FXMLLoader(getClass().getResource("main.fxml"));
-        var scene = new Scene(loader.load());
+        //Spring context elérés
+        var springContext = Launcher.context;
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+        loader.setControllerFactory(springContext::getBean);
+
+        Scene scene = new Scene(loader.load());
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         stage.setScene(scene);

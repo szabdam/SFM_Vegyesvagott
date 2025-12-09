@@ -9,11 +9,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import org.example.model.Csomag;
-import org.example.model.CsomagService;
 import org.example.model.Csomagautomata;
 import org.example.model.Rekesz;
+import org.example.service.AutomataService;
+import org.example.service.CsomagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AdminController {
+
+    @Autowired
+    private CsomagService csomagService;
+
+    @Autowired
+    private AutomataService automataService;
 
     // Bal oldali menü gombjai
     @FXML
@@ -70,7 +80,7 @@ public class AdminController {
     private Label lblKarbantartas;
 
     // --- KÖZÖS SERVICE (NEM példányosítjuk itt!) ---
-    private CsomagService csomagService;
+    //private CsomagService csomagService;
 
     // Listák
     private ObservableList<Csomagautomata> masterAutomataData = FXCollections.observableArrayList();
@@ -117,6 +127,10 @@ public class AdminController {
 
         colCelautomata.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().getCelautomata()));
+
+        // --- Adatok betöltése JPA-ból ---
+        masterAutomataData.setAll(automataService.getAllAutomatak());
+        masterCsomagData.setAll(csomagService.getAllCsomagok());
 
         // 3) Filterelt listák (egyelőre üres master listákon)
         filteredAutomatak = new FilteredList<>(masterAutomataData, p -> true);
@@ -197,6 +211,7 @@ public class AdminController {
     // =====================================================
     //              SERVICE BEÁLLÍTÁSA KÍVÜLRŐL
     // =====================================================
+    /*
     public void setService(CsomagService service) {
         this.csomagService = service;
 
@@ -204,4 +219,5 @@ public class AdminController {
         masterAutomataData.setAll(service.getAutomatak());
         masterCsomagData.setAll(service.getOsszesCsomag());
     }
+     */
 }
