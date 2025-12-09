@@ -30,6 +30,11 @@ public class CsomagServiceImpl implements CsomagService {
     }
 
     @Override
+    public Csomag getByAzonosito(Long id) {
+        return csomagRepository.findByAzonosito(id);
+    }
+
+    @Override
     public boolean isValidID(String id) {
         if (id == null) return false;
         return validIds.containsKey(id);

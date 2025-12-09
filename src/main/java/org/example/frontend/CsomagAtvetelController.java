@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.model.Csomag;
 import org.example.service.CsomagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,20 +53,26 @@ public class CsomagAtvetelController {
     }
 
     public void HandleEnter(ActionEvent actionEvent) {
-        String id = tfPackageID.getText().trim();
 
-        if (id.isEmpty()) {
-            txtValasz.setText("Kérjük adjon meg egy csomagazonosítót!");
+        String idText = tfPackageID.getText().trim();
+
+        Long id;
+        try {
+            id = Long.parseLong(idText);
+        } catch (NumberFormatException e) {
+            txtValasz.setText("Érvénytelen azonosító!");
             return;
         }
 
-        if (csomagService.isValidID(id)) {
-            String automata = csomagService.getAutomataNev(id);
-            txtValasz.setText("A csomag az alábbi automatában található:\n" + automata);
-        } else {
-            txtValasz.setText("Nincs ilyen csomag az adatbázisban.");
-        }
+        Csomag csomag = csomagService.getByAzonosito(id);
 
-        System.out.println("IdFromTf: " + id);
+        if (csomag == null) {
+            txtValasz.setText("Nincs ilyen csomag az adatbázisban.");
+        } else {
+            txtValasz.setText(
+                    "A csomag az alábbi automatában található:\n" +
+                            csomag.getCelautomata()
+            );
+        }
     }
 }

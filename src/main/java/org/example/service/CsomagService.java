@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface CsomagService {
 
+    Csomag getByAzonosito(Long id);
+
     boolean isValidID(String id);
 
     String getAutomataNev(String id);
