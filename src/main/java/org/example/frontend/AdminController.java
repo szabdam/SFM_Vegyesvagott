@@ -138,8 +138,8 @@ public class AdminController {
                 new SimpleStringProperty(c.getValue().getCelautomata()));
 
         // --- Adatok betöltése JPA-ból ---
-        //masterAutomataData.setAll(automataService.getAllAutomatak());
-        //masterCsomagData.setAll(csomagService.getAllCsomagok());
+        masterAutomataData.setAll(automataService.getAllAutomatak());
+        masterCsomagData.setAll(csomagService.getAllCsomagok());
 
         // 3) Filterelt listák (egyelőre üres master listákon)
         filteredAutomatak = new FilteredList<>(masterAutomataData, p -> true);
