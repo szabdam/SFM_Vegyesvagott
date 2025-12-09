@@ -1,6 +1,7 @@
 package org.example.model;
 
 import jakarta.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "CSOMAGOK")
@@ -25,6 +26,9 @@ public class Csomag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long azonosito;
 
+    @Column(name = "CSOMAG_KOD", unique = true)
+    private String csomagKod; // ez lesz a PKG-... kód
+
     public Csomag() {}
 
     public Csomag(String meret, String cimzett, String felado, String megjegyzes, String celautomata) {
@@ -33,6 +37,22 @@ public class Csomag {
         this.felado = felado;
         this.megjegyzes = megjegyzes;
         this.celautomata = celautomata;
+    }
+
+    @PrePersist
+    public void generalCsomagKod() {
+        if (csomagKod == null || csomagKod.isBlank()) {
+            String kod = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+            this.csomagKod = "PKG-" + kod;
+        }
+    }
+
+    public String getCsomagKod() {
+        return csomagKod;
+    }
+
+    public void setCsomagKod(String csomagKod) {
+        this.csomagKod = csomagKod;
     }
 
     public Long getAzonosito() {return azonosito;}
@@ -68,6 +88,7 @@ public class Csomag {
                 ", megjegyzes='" + megjegyzes + '\'' +
                 ", celautomata='" + celautomata + '\'' +
                 ", azonosito='" + azonosito +
+                ", csomagKod='" + csomagKod + '\'' +
                 '}';
     }
 }

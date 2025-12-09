@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.model.Csomag;
@@ -44,6 +45,9 @@ public class CsomagFeladasController {
 
     @FXML
     private TextField tfMegjegyzes;
+
+    @FXML
+    private Label lblAzonosito;
 
 
     private String selectedSize = null;
@@ -145,7 +149,12 @@ public class CsomagFeladasController {
                 automata
         );
 
-        csomagService.saveCsomag(csomag);
+        Csomag mentett = csomagService.saveCsomag(csomag);
+
+        lblAzonosito.setText("Csomagkód: " + mentett.getCsomagKod());
+        lblAzonosito.setVisible(true);
+
+
 
         System.out.println("Csomag mentve: " + csomag);
     }

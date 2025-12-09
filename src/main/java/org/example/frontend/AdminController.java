@@ -1,6 +1,7 @@
 package org.example.frontend;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -88,6 +89,10 @@ public class AdminController {
     @FXML
     private Label lblKarbantartas;
 
+    @FXML
+    private TableColumn<Csomag, String> colCsomagKod;
+
+
     // --- KÖZÖS SERVICE (NEM példányosítjuk itt!) ---
     //private CsomagService csomagService;
 
@@ -136,6 +141,9 @@ public class AdminController {
 
         colCelautomata.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().getCelautomata()));
+
+        colCsomagKod.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().getCsomagKod()));
 
         // --- Adatok betöltése JPA-ból ---
         masterAutomataData.setAll(automataService.getAllAutomatak());
