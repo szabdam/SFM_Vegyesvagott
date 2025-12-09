@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface CsomagRepository extends JpaRepository<Csomag, Long> {
-    Optional<Csomag> findByAtveteliKod(String atveteliKod);
+    Optional<Csomag> findByAzonosito(String atveteliKod);
 }
