@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface CsomagRepository extends JpaRepository<Csomag, Long> {
-    Optional<Csomag> findByAzonosito(String atveteliKod);
+    // Keresés méret alapján
+    // Pl.: findByMeret("kicsi")
+    java.util.List<Csomag> findByMeret(String meret);
 }

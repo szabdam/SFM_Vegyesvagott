@@ -111,7 +111,7 @@ public class CsomagFeladasController {
         String megjegyzes = tfMegjegyzes.getText();
         String automata = cbAutomata.getSelectionModel().getSelectedItem();
 
-        Csomag csomag = new Csomag(felado, cimzett, megjegyzes, selectedSize, automata, ++cnt);
+        Csomag csomag = new Csomag(felado, cimzett, megjegyzes, selectedSize, automata);
 
         csomagService.validIds.put(String.valueOf(cnt), automata);
 

@@ -1,24 +1,47 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "AUTOMATAK")
 public class Csomagautomata {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "CIM", unique = true, nullable = false)
     private String cim;
-    private List<Rekesz> rekeszek;
+
+    @OneToMany(mappedBy = "automata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Rekesz> rekeszek = new ArrayList<>();
+
+    public Csomagautomata() {
+    }
 
     /**
      * Konstruktor különböző méretű rekeszekhez
      * @param cim Automata címe
      * @param rekeszMeretek Lista a rekeszek méreteivel (pl. "kicsi", "közepes", "nagy")
      */
+
     public Csomagautomata(String cim, List<String> rekeszMeretek) {
         this.cim = cim;
-        this.rekeszek = new ArrayList<>();
-        int id = 1;
-        for (String meret : rekeszMeretek) {
-            rekeszek.add(new Rekesz(id++, meret));
-        }
+        rekeszMeretek.forEach(meret -> {
+            Rekesz r = new Rekesz(meret);
+            addRekesz(r);
+        });
+    }
+    public void addRekesz(Rekesz rekesz) {
+        rekeszek.add(rekesz);
+        rekesz.setAutomata(this);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getCim() {

@@ -1,25 +1,43 @@
 package org.example.model;
 
-public class Csomag {
-    private String meret; // "kicsi", "közepes", "nagy"
-    private String cimzett;
-    private String felado;
-    private String megjegyzes;
-    private String celautomata;
-    private int azonosito;
+import jakarta.persistence.*;
 
-    public Csomag(String meret, String cimzett, String felado, String megjegyzes, String celautomata, int azonosito) {
+@Entity
+@Table(name = "CSOMAGOK")
+public class Csomag {
+
+    @Column(nullable = false)
+    private String meret;// "kicsi", "közepes", "nagy"
+
+    @Column(nullable = false)
+    private String cimzett;
+
+    @Column(nullable = false)
+    private String felado;
+
+    @Column
+    private String megjegyzes;
+
+    @Column(name = "CEL_AUTOMATA")
+    private String celautomata;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long azonosito;
+
+    public Csomag() {}
+
+    public Csomag(String meret, String cimzett, String felado, String megjegyzes, String celautomata) {
         this.meret = meret;
         this.cimzett = cimzett;
         this.felado = felado;
         this.megjegyzes = megjegyzes;
         this.celautomata = celautomata;
-        this.azonosito = azonosito;
     }
 
-    public int getAzonosito() {return azonosito;}
+    public Long getAzonosito() {return azonosito;}
 
-    public void setAzonosito(int azonosito) {this.azonosito = azonosito;}
+    public void setAzonosito(Long azonosito) {this.azonosito = azonosito;}
 
     public String getMeret() {return meret;}
 

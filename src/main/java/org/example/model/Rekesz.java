@@ -9,14 +9,19 @@ public class Rekesz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "MERET", nullable = false)
+    @Column(nullable = false)
     private String meret;
 
-    @Column(name = "FOGLALT", nullable = false)
-    private boolean foglalt;
+    @Column(nullable = false)
+    private boolean foglalt = false;
 
-    public Rekesz(int id, String meret) {
-        this.id = id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "automata_id")
+    private Csomagautomata automata;
+
+    public Rekesz() {}
+
+    public Rekesz(String meret) {
         this.meret = meret;
         this.foglalt = false;
     }
@@ -25,6 +30,14 @@ public class Rekesz {
     public String getMeret() { return meret; }
     public boolean isFoglalt() { return foglalt; }
     public void setFoglalt(boolean foglalt) { this.foglalt = foglalt; }
+
+    public Csomagautomata getAutomata() {
+        return automata;
+    }
+
+    public void setAutomata(Csomagautomata automata) {
+        this.automata = automata;
+    }
 
     @Override
     public String toString() {

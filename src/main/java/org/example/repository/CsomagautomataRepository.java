@@ -8,5 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface CsomagautomataRepository extends JpaRepository<Csomagautomata, Long> {
-    Optional<Csomagautomata> findByCim(String cim);
+    // Egyedi keresés cím alapján
+    Csomagautomata findByCim(String cim);
+
+    boolean existsByCim(String cim);
 }
