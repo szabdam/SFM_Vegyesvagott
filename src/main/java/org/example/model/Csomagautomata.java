@@ -83,4 +83,6 @@ public class Csomagautomata {
                 ", van szabad hely=" + vanSzabadHely() +
                 '}';
     }
+
+
 }
