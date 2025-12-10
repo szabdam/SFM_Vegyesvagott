@@ -15,4 +15,8 @@ public interface RekeszService {
     List<Rekesz> getSzabadRekeszek(Long automataId);
 
     Rekesz save(Rekesz rekesz);
+
+    // Count helpers for live capacity stats
+    long countSzabad(Long automataId);
+    long countFoglalt(Long automataId);
 }

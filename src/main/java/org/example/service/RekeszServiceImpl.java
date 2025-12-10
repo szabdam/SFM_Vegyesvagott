@@ -40,4 +40,14 @@ public class RekeszServiceImpl implements RekeszService {
     public Rekesz save(Rekesz rekesz) {
         return rekeszRepository.save(rekesz);
     }
+
+    @Override
+    public long countSzabad(Long automataId) {
+        return rekeszRepository.countByAutomataIdAndFoglaltFalse(automataId);
+    }
+
+    @Override
+    public long countFoglalt(Long automataId) {
+        return rekeszRepository.countByAutomataIdAndFoglaltTrue(automataId);
+    }
 }

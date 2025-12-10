@@ -16,4 +16,10 @@ public interface RekeszRepository extends JpaRepository<Rekesz, Long> {
 
     // Szabad rekeszek keresése egy adott automatában
     List<Rekesz> findByAutomataIdAndFoglaltFalse(Long automataId);
+
+    // Méret szerinti szabad rekesz keresés
+    List<Rekesz> findByAutomataIdAndMeretAndFoglaltFalse(Long automataId, String meret);
+
+    long countByAutomataIdAndFoglaltFalse(Long automataId);
+    long countByAutomataIdAndFoglaltTrue(Long automataId);
 }

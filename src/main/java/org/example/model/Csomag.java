@@ -1,7 +1,11 @@
 package org.example.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.time.Instant;
 
 @Entity
 @Table(name = "CSOMAGOK")
@@ -22,12 +26,41 @@ public class Csomag {
     @Column(name = "CEL_AUTOMATA")
     private String celautomata;
 
+    @Column
+    private String allapot;
+
+    // --- Új mezők a szolgáltatási folyamatokhoz ---
+    @Column(name = "FELADASI_KOD")
+    private String feladasiKod;      // kód, amivel a feladó elhelyezi a csomagot
+
+    @Column(name = "ATVETELI_KOD")
+    private String atveteliKod;      // kód, amivel a címzett átveszi
+
+    @Column(name = "FOGLALAS_LEJAR")
+    private Instant foglalasLejar;   // lefoglalás lejáratának ideje (24h)
+
+    @Column(name = "LETREHOZVA")
+    private Instant letrehozva;      // létrehozás ideje
+
+    @Column(name = "REKESZ_ID")
+    private Integer rekeszId;        // opcionális: melyik rekeszhez kötjük
+
+
+    public static final List<String> allapotok = Arrays.asList(
+            "Feladva",
+            "Begyűjtve",
+            "Raktárban",
+            "Kiszállítás alatt",
+            "Átvételre kész",
+            "Átvéve"
+    );
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long azonosito;
 
-    @Column(name = "CSOMAG_KOD", unique = true)
-    private String csomagKod; // ez lesz a PKG-... kód
+    // 6 jegyű, nagybetűs hexadecimális azonosító (véletlenszerűen generált)
+    @Column(name = "HEX_ID", length = 6, unique = true)
+    private String hexId;
 
     public Csomag() {}
 
@@ -37,25 +70,42 @@ public class Csomag {
         this.felado = felado;
         this.megjegyzes = megjegyzes;
         this.celautomata = celautomata;
-    }
-
-    @PrePersist
-    public void generalCsomagKod() {
-        if (csomagKod == null || csomagKod.isBlank()) {
-            String kod = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-            this.csomagKod = "PKG-" + kod;
-        }
-    }
-
-    public String getCsomagKod() {
-        return csomagKod;
-    }
-
-    public void setCsomagKod(String csomagKod) {
-        this.csomagKod = csomagKod;
+        this.allapot = allapotok.get(0);
     }
 
     public Long getAzonosito() {return azonosito;}
+
+    // Megjelenítéshez: 6 jegyű hexadecimális azonosító (null esetén üres string)
+    @Transient
+    public String getHexId() {
+        return hexId == null ? "" : hexId;
+    }
+
+    public void setHexId(String hexId) { this.hexId = hexId; }
+
+    public void moveForward() {
+        // Haladjon a következő állapotra biztonságosan
+        if (allapot == null) {
+            // Ha még nincs állapot, beállítjuk az elsőt
+            this.allapot = allapotok.get(0);
+            return;
+        }
+        int idx = allapotok.indexOf(this.allapot);
+        if (idx < 0) {
+            // Ismeretlen állapot esetén visszaállunk az elsőre
+            this.allapot = allapotok.get(0);
+            return;
+        }
+        if (idx < allapotok.size() - 1) {
+            this.allapot = allapotok.get(idx + 1);
+        }
+        // Ha az utolsó állapoton vagyunk, maradunk ott (nincs wrap)
+    }
+
+    public String getAllapot() {return allapot;}
+
+    public void setAllapot(String allapot) { this.allapot = allapot; }
+
 
     public void setAzonosito(Long azonosito) {this.azonosito = azonosito;}
 
@@ -79,6 +129,31 @@ public class Csomag {
 
     public void setCelautomata(String celautomata) {this.celautomata = celautomata;}
 
+    public String getFeladasiKod() { return feladasiKod; }
+
+    public void setFeladasiKod(String feladasiKod) { this.feladasiKod = feladasiKod; }
+
+    public String getAtveteliKod() { return atveteliKod; }
+
+    public void setAtveteliKod(String atveteliKod) { this.atveteliKod = atveteliKod; }
+
+    public Instant getFoglalasLejar() { return foglalasLejar; }
+
+    public void setFoglalasLejar(Instant foglalasLejar) { this.foglalasLejar = foglalasLejar; }
+
+    public Instant getLetrehozva() { return letrehozva; }
+
+    public void setLetrehozva(Instant letrehozva) { this.letrehozva = letrehozva; }
+
+    public Integer getRekeszId() { return rekeszId; }
+
+    public void setRekeszId(Integer rekeszId) { this.rekeszId = rekeszId; }
+
+    @PrePersist
+    private void onCreate() {
+        this.letrehozva = Instant.now();
+    }
+
     @Override
     public String toString() {
         return "Csomag{" +
@@ -87,8 +162,8 @@ public class Csomag {
                 ", felado='" + felado + '\'' +
                 ", megjegyzes='" + megjegyzes + '\'' +
                 ", celautomata='" + celautomata + '\'' +
+                ", allapot='" + allapot + '\'' +
                 ", azonosito='" + azonosito +
-                ", csomagKod='" + csomagKod + '\'' +
                 '}';
     }
 }

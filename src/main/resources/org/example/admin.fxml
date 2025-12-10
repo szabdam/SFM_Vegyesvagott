@@ -59,12 +59,14 @@
                 </TableView>
 
                 <!-- CSOMAGOK TÁBLÁZATA (rejtve indul) -->
-                <TableView fx:id="tableCsomagok" VBox.vgrow="ALWAYS" visible="false" managed="false">
+                <TableView fx:id="tableCsomagok" VBox.vgrow="ALWAYS"
+                           visible="false" managed="false">
                     <columns>
+                        <TableColumn fx:id="colId" prefWidth="100.0" text="ID" />
                         <TableColumn fx:id="colFelado" prefWidth="200.0" text="Feladó" />
                         <TableColumn fx:id="colCimzett" prefWidth="200.0" text="Címzett" />
                         <TableColumn fx:id="colCelautomata" prefWidth="250.0" text="Cél automata" />
-                        <TableColumn fx:id="colCsomagKod" prefWidth="120.0" text="Csomagkód" /> <!-- ÚJ -->
+                        <TableColumn fx:id="colAllapot1" prefWidth="150.0" minWidth="120.0" text="Állapot" />
                     </columns>
                 </TableView>
 

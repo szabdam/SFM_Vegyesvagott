@@ -125,7 +125,7 @@ public class CsomagFeladasController {
 
 
     @FXML
-    public void handleDone() {
+    public void handleDone(ActionEvent event) throws IOException {
         if (selectedSize == null) {
             System.out.println("Nincs méret kiválasztva.");
             return;
@@ -155,6 +155,7 @@ public class CsomagFeladasController {
         tfCsomagKod.setVisible(true);
 
         System.out.println("Csomag mentve: " + csomag);
+        handleBack(event);
     }
 
 
