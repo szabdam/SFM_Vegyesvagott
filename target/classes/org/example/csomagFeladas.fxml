@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.CsomagFeladasController">
+    <children>
+        <Button fx:id="btnS" layoutX="59.0" layoutY="49.0" mnemonicParsing="false" onAction="#handleSizeS" prefHeight="200.0" prefWidth="120.0" text="S" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="75.0">
+            <font>
+                <Font name="System Bold" size="35.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnL" layoutX="180.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleSizeL" prefHeight="200.0" prefWidth="120.0" text="L" AnchorPane.leftAnchor="350.0" AnchorPane.topAnchor="75.0">
+            <font>
+                <Font name="System Bold" size="60.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnM" layoutX="197.0" layoutY="75.0" mnemonicParsing="false" onAction="#handleSizeM" prefHeight="200.0" prefWidth="120.0" text="M" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="75.0">
+            <font>
+                <Font name="System Bold" size="44.0" />
+            </font>
+        </Button>
+        <ComboBox fx:id="cbAutomata" layoutX="190.0" layoutY="328.0" prefHeight="40.0" prefWidth="520.0" AnchorPane.topAnchor="325.0" />
+        <TextField fx:id="tfFelado" layoutX="499.0" layoutY="75.0" prefHeight="50.0" prefWidth="250.0" promptText="Feladó" AnchorPane.rightAnchor="50.13206644353568" AnchorPane.topAnchor="75.0" />
+        <TextField fx:id="tfCimzett" layoutX="499.0" layoutY="150.0" prefHeight="50.0" prefWidth="250.0" promptText="Címzett" AnchorPane.rightAnchor="50.13206644353568" AnchorPane.topAnchor="150.0" />
+        <TextField fx:id="tfMegjegyzes" layoutX="499.0" layoutY="224.0" prefHeight="50.0" prefWidth="250.0" promptText="Megjegyzés" AnchorPane.rightAnchor="50.13206644353568" AnchorPane.topAnchor="224.0" />
+        <Text layoutX="48.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Csomag adatai:" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Text layoutX="25.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Javasolt automata">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Button fx:id="btnBack" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="50.0" prefWidth="50.0" text="Vissza" AnchorPane.bottomAnchor="14.283017042736454" AnchorPane.leftAnchor="14.0" />
+        <Button fx:id="btnDone" layoutX="735.0" layoutY="535.0" mnemonicParsing="false" onAction="#handleDone" prefHeight="50.0" prefWidth="50.0" text="Kész" />
+    </children>
+</AnchorPane>
