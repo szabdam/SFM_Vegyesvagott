@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import org.example.frontend.AdminController?>
+
+<BorderPane prefHeight="600.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/23.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.frontend.AdminController">
+
+    <!-- BAL OLDALI MENÜ -->
+    <left>
+        <VBox prefWidth="140.0" spacing="10.0" style="-fx-background-color: #F5F5F5;">
+            <padding>
+                <Insets bottom="20" left="10" right="10" top="20" />
+            </padding>
+            <children>
+                <Button fx:id="btnAutomatak" maxWidth="Infinity" onAction="#handleAutomatakMenu" text="Automaták" />
+                <Button fx:id="btnCsomagok" maxWidth="Infinity" onAction="#handleCsomagokMenu" text="Csomagok" />
+            </children>
+        </VBox>
+    </left>
+
+    <!-- KÖZÉPSŐ RÉSZ -->
+    <center>
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <children>
+
+                <!-- FELSŐ SOR -->
+                <HBox spacing="10.0">
+                    <children>
+                        <TextField fx:id="tfKereses" promptText="Kereső..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnSzures" onAction="#handleSzures" text="Szűrés" />
+                        <Button fx:id="btnAttekintes" onAction="#handleAttekintes" text="Áttekintés" />
+                        <Button fx:id="btnModositas" onAction="#handleModositas" text="Módosítás" />
+                    </children>
+                </HBox>
+
+                <!-- AUTOMATÁK TÁBLÁZATA -->
+                <TableView fx:id="tableAutomatak" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCim" prefWidth="250.0" text="Cím" />
+                        <TableColumn fx:id="colTelitettseg" prefWidth="120.0" text="Telítettség" />
+                        <TableColumn fx:id="colSzabad" prefWidth="140.0" text="Szabad rekeszek" />
+                        <TableColumn fx:id="colAllapot" prefWidth="80.0" text="Állapot" />
+                    </columns>
+                </TableView>
+
+                <!-- CSOMAGOK TÁBLÁZATA (rejtve indul) -->
+                <TableView fx:id="tableCsomagok" VBox.vgrow="ALWAYS"
+                           visible="false" managed="false">
+                    <columns>
+                        <TableColumn fx:id="colId" prefWidth="100.0" text="ID" />
+                        <TableColumn fx:id="colFelado" prefWidth="200.0" text="Feladó" />
+                        <TableColumn fx:id="colCimzett" prefWidth="200.0" text="Címzett" />
+                        <TableColumn fx:id="colCelautomata" prefWidth="250.0" text="Cél automata" />
+                        <TableColumn fx:id="colAllapot1" prefWidth="150.0" minWidth="120.0" text="Állapot" />
+                    </columns>
+                </TableView>
+
+            </children>
+        </VBox>
+    </center>
+
+    <!-- JOBB OLDALI PANEL -->
+    <right>
+        <AnchorPane prefWidth="200.0"
+                    style="-fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC;">
+            <children>
+                <Label fx:id="lblKarbantartas" layoutX="20.0" layoutY="20.0"
+                       text="Karbantartás" />
+                <!--Kilepes gomb -->
+                <Button fx:id="btnKilepes"
+                        text="Kilépés"
+                        layoutX="50.0" layoutY="540.0"
+                        onAction="#handleKilepes"
+                        prefWidth="100"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </children>
+        </AnchorPane>
+    </right>
+
+</BorderPane>

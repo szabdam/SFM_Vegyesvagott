@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.example.frontend.CsomagModositasController?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.frontend.CsomagModositasController"
+            prefWidth="480.0" prefHeight="260.0">
+
+    <center>
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets top="15" right="15" bottom="0" left="15" />
+            </padding>
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" prefWidth="140" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <children>
+                <Label text="Feladó:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="tfFelado" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                <Label text="Címzett:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <TextField fx:id="tfCimzett" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                <Label text="Cél automata:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <ComboBox fx:id="cbAutomata" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                <Label text="Állapot:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <ComboBox fx:id="cbAllapot" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+            </children>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15" />
+            </padding>
+            <children>
+                <Button fx:id="btnTorles" text="Törlés" onAction="#handleTorles" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnMegse" text="Mégse" onAction="#handleMegse" />
+                <Button fx:id="btnMentes" text="Mentés" onAction="#handleMentes" />
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>
