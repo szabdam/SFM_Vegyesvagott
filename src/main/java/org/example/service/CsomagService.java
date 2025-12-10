@@ -19,6 +19,7 @@ public interface CsomagService {
 
     void deleteCsomag(Long id);
 
+
     // Admin módosító ablakból történő mentéshez
     Csomag updateCsomagAdmin(Long id,
                               String ujFelado,

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CsomagFeladasController {
@@ -45,10 +46,9 @@ public class CsomagFeladasController {
     @FXML
     private TextField tfMegjegyzes;
 
-
     private String selectedSize = null;
 
-    private CsomagService csomagService; // vagy kapja kívülrőlú
+    private CsomagService csomagService;
     private final AutomataService automataService;
 
     @Autowired
@@ -58,44 +58,36 @@ public class CsomagFeladasController {
         this.automataService = automataService;
     }
 
-    private int cnt = 0;
-
-    @FXML
-    void btnS(ActionEvent event) {}
-
     @FXML
     private void initialize() {
-        // AUTOMATÁK BETÖLTÉSE AZ ADATBÁZISBÓL
-        List<Csomagautomata> automatak = automataService.getAllAutomatak();
-
+        // Initialize with empty automation list - wait for size selection
         cbAutomata.getItems().clear();
-        for (Csomagautomata a : automatak) {
-            cbAutomata.getItems().add(a.getCim());
-        }
+        cbAutomata.setPromptText("Válassz méretet először");
 
-        if (!cbAutomata.getItems().isEmpty()) {
-            cbAutomata.getSelectionModel().selectFirst();
-        }
+        // Set up proper action handlers for the size buttons
+        // Remove any existing conflicting handlers
     }
 
     @FXML
     private void handleSizeS() {
-        selectedSize = "S";
-        System.out.println("Selected Size: " + selectedSize);
-        updateSizeButtonStyles();
+        setSelectedSize("S");
+        updateAutomataListForSize("S");
     }
 
     @FXML
     private void handleSizeM() {
-        selectedSize = "M";
-        System.out.println("Selected Size: " + selectedSize);
-        updateSizeButtonStyles();
+        setSelectedSize("M");
+        updateAutomataListForSize("M");
     }
 
     @FXML
     private void handleSizeL() {
-        selectedSize = "L";
-        System.out.println("Selected Size: " + selectedSize);
+        setSelectedSize("L");
+        updateAutomataListForSize("L");
+    }
+
+    private void setSelectedSize(String size) {
+        selectedSize = size;
         updateSizeButtonStyles();
     }
 
@@ -111,6 +103,45 @@ public class CsomagFeladasController {
         }
     }
 
+    private void updateAutomataListForSize(String meret) {
+        if (cbAutomata == null) {
+            System.err.println("cbAutomata is null - check FXML injection");
+            return;
+        }
+
+        // Clear current automation items
+        cbAutomata.getItems().clear();
+
+        // Get all automations
+        List<Csomagautomata> allAutomatak = automataService.getAllAutomatak();
+
+        // Filter automations that have free compartments of the selected size
+        List<Csomagautomata> compatibleAutomatak = allAutomatak.stream()
+                .filter(automata -> hasFreeRekeszForSize(automata, meret))
+                .collect(Collectors.toList());
+
+        // Add compatible automations to the dropdown
+        compatibleAutomatak.forEach(automata ->
+                cbAutomata.getItems().add(automata.getCim())
+        );
+
+        // If there are compatible automations, select the first one
+        if (!compatibleAutomatak.isEmpty()) {
+            cbAutomata.getSelectionModel().select(0);
+        } else {
+            // Show message if no compatible automations found
+            cbAutomata.setPromptText("Nincs megfelelő automata (" + meret + " méret)");
+        }
+    }
+
+    private boolean hasFreeRekeszForSize(Csomagautomata automata, String meret) {
+        return automata.getRekeszek().stream()
+                .anyMatch(rekesz ->
+                        !rekesz.isFoglalt() &&
+                                rekesz.getMeret().equalsIgnoreCase(meret)
+                );
+    }
+
     private void resetButtonStyle(Button btn) {
         btn.setStyle("");
     }
@@ -118,7 +149,6 @@ public class CsomagFeladasController {
     private void highlightButton(Button btn) {
         btn.setStyle("-fx-background-color: #00997a; -fx-text-fill: white;");
     }
-
 
     @FXML
     public void handleDone(ActionEvent event) throws IOException {
@@ -151,7 +181,6 @@ public class CsomagFeladasController {
         handleBack(event);
     }
 
-
     @FXML
     public void handleBack(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/main.fxml"));
@@ -165,14 +194,13 @@ public class CsomagFeladasController {
         stage.show();
     }
 
+    // Remove or modify the setService method to not automatically populate automations
     public void setService(CsomagService service) {
         this.csomagService = service;
-
+        // Don't populate automations here - wait for size selection
         cbAutomata.getItems().clear();
-        for (Csomagautomata a : automataService.getAllAutomatak()) {
-            cbAutomata.getItems().add(a.getCim());
-        }
+        cbAutomata.setPromptText("Válassz méretet");
     }
-
-
 }
+
+
