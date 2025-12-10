@@ -6,6 +6,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.frontend.CsomagFeladasController">
     <children>
+
         <Button fx:id="btnS" layoutX="59.0" layoutY="49.0" mnemonicParsing="false" onAction="#handleSizeS" prefHeight="200.0" prefWidth="120.0" text="S" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="75.0">
             <font>
                 <Font name="System Bold" size="35.0" />
@@ -37,5 +38,14 @@
         </Text>
         <Button fx:id="btnBack" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="50.0" prefWidth="50.0" text="Vissza" AnchorPane.bottomAnchor="14.283017042736454" AnchorPane.leftAnchor="14.0" />
         <Button fx:id="btnDone" layoutX="735.0" layoutY="535.0" mnemonicParsing="false" onAction="#handleDone" prefHeight="50.0" prefWidth="50.0" text="Kész" />
+
+        <TextField fx:id="tfCsomagKod"
+                   editable="false"
+                   focusTraversable="false"
+                   layoutX="25.0"
+                   layoutY="400.0"
+                   style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-weight: bold;"
+        />
+
     </children>
 </AnchorPane>
