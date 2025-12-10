@@ -54,11 +54,13 @@ public class Csomag {
             "Átvételre kész",
             "Átvéve"
     );
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long azonosito;
+
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long azonosito;
 
     // 6 jegyű, nagybetűs hexadecimális azonosító (véletlenszerűen generált)
+    @Id
     @Column(name = "HEX_ID", length = 6, unique = true)
     private String hexId;
 
@@ -73,10 +75,10 @@ public class Csomag {
         this.allapot = allapotok.get(0);
     }
 
-    public Long getAzonosito() {return azonosito;}
+
 
     // Megjelenítéshez: 6 jegyű hexadecimális azonosító (null esetén üres string)
-    @Transient
+    // @Transient
     public String getHexId() {
         return hexId == null ? "" : hexId;
     }
@@ -107,7 +109,7 @@ public class Csomag {
     public void setAllapot(String allapot) { this.allapot = allapot; }
 
 
-    public void setAzonosito(Long azonosito) {this.azonosito = azonosito;}
+    public void setAzonosito(Long azonosito) {}
 
     public String getMeret() {return meret;}
 
@@ -163,7 +165,7 @@ public class Csomag {
                 ", megjegyzes='" + megjegyzes + '\'' +
                 ", celautomata='" + celautomata + '\'' +
                 ", allapot='" + allapot + '\'' +
-                ", azonosito='" + azonosito +
+                ", azonosito='" + hexId +
                 '}';
     }
 }

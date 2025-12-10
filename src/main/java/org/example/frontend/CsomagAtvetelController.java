@@ -34,8 +34,8 @@ public class CsomagAtvetelController {
     }
 
 
-    @FXML
-    private void initialize() {}
+
+
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/main.fxml"));
@@ -54,17 +54,14 @@ public class CsomagAtvetelController {
 
     public void HandleEnter(ActionEvent actionEvent) {
 
-        String idText = tfPackageID.getText().trim();
+        String hexId = tfPackageID.getText().trim();
 
-        Long id;
-        try {
-            id = Long.parseLong(idText);
-        } catch (NumberFormatException e) {
-            txtValasz.setText("Érvénytelen azonosító!");
+        if (hexId.isEmpty()) {
+            txtValasz.setText("Azonosító megadása kötelező!");
             return;
         }
 
-        Csomag csomag = csomagService.getByAzonosito(id);
+        Csomag csomag = csomagService.getByHexId(hexId);
 
         if (csomag == null) {
             txtValasz.setText("Nincs ilyen csomag az adatbázisban.");

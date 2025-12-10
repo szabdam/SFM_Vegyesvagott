@@ -41,9 +41,19 @@ public class CsomagServiceImpl implements CsomagService {
         validIds.put("B555", "Budapest, Kossuth tér 1. - Automata #3");
     }
 
-    @Override
-    public Csomag getByAzonosito(Long id) {
-        return csomagRepository.findByAzonosito(id);
+
+    public Csomag getByHexId(String hexId) {
+        return csomagRepository.findByHexId(hexId).orElse(null);
+    }
+
+    // @Override
+    // public Csomag getByAzonosito(Long id) {
+    //     return csomagRepository.findByAzonosito(id);
+    // }
+
+    public Csomag getCsomagById(String id) {
+        // Hex‑ID‑vel keresünk (String)
+        return csomagRepository.findByHexId(id).orElse(null);
     }
 
     @Override
@@ -81,9 +91,26 @@ public class CsomagServiceImpl implements CsomagService {
         return csomagRepository.save(csomag);
     }
 
+
+    // ------------------------------------------------------------------
+    //   TÖRLÉS – HEX‑ID (String) ALAPÚ
+    // ------------------------------------------------------------------
     @Override
-    public Csomag getCsomagById(Long id) {
-        return csomagRepository.findById(id).orElse(null);
+    @Transactional
+    public void deleteCsomag(String id) {               // <-- String, nem Long
+        // A hex‑ID‑vel keressük a csomagot
+        Csomag cs = csomagRepository.findByHexId(id).orElse(null);
+        if (cs == null) return;
+
+        Integer rekeszId = cs.getRekeszId();
+        if (rekeszId != null) {
+            rekeszRepository.findById(rekeszId.longValue())
+                    .ifPresent(r -> {
+                        r.setFoglalt(false);
+                        rekeszRepository.save(r);
+                    });
+        }
+        csomagRepository.delete(cs);
     }
 
     @Override
@@ -91,30 +118,16 @@ public class CsomagServiceImpl implements CsomagService {
         return csomagRepository.findAll();
     }
 
-    @Override
-    @Transactional
-    public void deleteCsomag(Long id) {
-        // Free locker if exists, then delete
-        csomagRepository.findById(id).ifPresent(c -> {
-            Integer rekeszId = c.getRekeszId();
-            if (rekeszId != null) {
-                rekeszRepository.findById(rekeszId.longValue()).ifPresent(r -> {
-                    r.setFoglalt(false);
-                    rekeszRepository.save(r);
-                });
-            }
-        });
-        csomagRepository.deleteById(id);
-    }
+
 
     @Override
     @Transactional
-    public Csomag updateCsomagAdmin(Long id,
+    public Csomag updateCsomagAdmin(String id,
                                     String ujFelado,
                                     String ujCimzett,
                                     String ujCelAutomata,
                                     String ujAllapot) {
-        Csomag cs = csomagRepository.findById(id)
+        Csomag cs = csomagRepository.findByHexId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Nincs ilyen csomag: " + id));
 
         String regiCel = cs.getCelautomata();
