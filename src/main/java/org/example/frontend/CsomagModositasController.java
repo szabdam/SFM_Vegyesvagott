@@ -67,7 +67,7 @@ public class CsomagModositasController {
         if (csomag == null) return;
         try {
             csomagService.updateCsomagAdmin(
-                    csomag.getAzonosito(),
+                    csomag.getHexId(),
                     tfFelado.getText().trim(),
                     tfCimzett.getText().trim(),
                     cbAutomata.getSelectionModel().getSelectedItem(),
@@ -91,7 +91,7 @@ public class CsomagModositasController {
         var res = conf.showAndWait();
         if (res.isPresent() && res.get() == ButtonType.OK) {
             try {
-                csomagService.deleteCsomag(csomag.getAzonosito());
+                csomagService.deleteCsomag(csomag.getHexId());
                 close();
             } catch (Exception e) {
                 Alert a = new Alert(Alert.AlertType.ERROR, "Törlés sikertelen: " + e.getMessage());

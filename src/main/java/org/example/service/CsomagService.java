@@ -2,13 +2,10 @@ package org.example.service;
 
 import org.example.model.Csomag;
 import java.util.List;
-import java.util.Optional;
 
 public interface CsomagService {
 
-    Optional<Csomag> findByCsomagKod(String kod);
 
-    Csomag getByAzonosito(Long id);
 
     boolean isValidID(String id);
 
@@ -16,15 +13,19 @@ public interface CsomagService {
 
     Csomag saveCsomag(Csomag csomag);
 
-    Csomag getCsomagById(Long id);
+    // --- Azonosító (hex‑ID) -------------------------------------------------
+    /** Keresi a csomagot a 6‑jegyű hex‑ID alapján. */
+    Csomag getByHexId(String hexId);
+
+    // (régi getCsomagById(Long) és getCsomagById(String) metódusok eltávolítva)
 
     List<Csomag> getAllCsomagok();
 
-    void deleteCsomag(Long id);
+    void deleteCsomag(String id);
 
 
     // Admin módosító ablakból történő mentéshez
-    Csomag updateCsomagAdmin(Long id,
+    Csomag updateCsomagAdmin(String id,
                               String ujFelado,
                               String ujCimzett,
                               String ujCelAutomata,

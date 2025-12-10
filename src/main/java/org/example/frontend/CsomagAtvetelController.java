@@ -34,8 +34,8 @@ public class CsomagAtvetelController {
     }
 
 
-    @FXML
-    private void initialize() {}
+
+
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/main.fxml"));
@@ -52,30 +52,24 @@ public class CsomagAtvetelController {
         stage.show();
     }
 
-    @FXML
-    private void HandleEnter() {
+    public void HandleEnter(ActionEvent actionEvent) {
 
-        String kod = tfPackageID.getText().trim();
+        String hexId = tfPackageID.getText().trim();
 
-        if (kod.isEmpty()) {
-            txtValasz.setText("Kérjük, adja meg a csomagkódot!");
+        if (hexId.isEmpty()) {
+            txtValasz.setText("Azonosító megadása kötelező!");
             return;
         }
 
-        // keresés adatbázisban
-        var talalat = csomagService.findByCsomagKod(kod);
+        Csomag csomag = csomagService.getByHexId(hexId);
 
-        if (talalat.isEmpty()) {
-            txtValasz.setText("Nincs ilyen csomag a rendszerben: " + kod);
-            return;
+        if (csomag == null) {
+            txtValasz.setText("Nincs ilyen csomag az adatbázisban.");
+        } else {
+            txtValasz.setText(
+                    "A csomag az alábbi automatában található:\n" +
+                            csomag.getCelautomata()
+            );
         }
-
-        Csomag c = talalat.get();
-
-        txtValasz.setText(
-                        "Címzett: " + c.getCimzett() + "\n" +
-                        "Feladó: " + c.getFelado() + "\n" +
-                        "Automata: " + c.getCelautomata()
-        );
     }
 }
